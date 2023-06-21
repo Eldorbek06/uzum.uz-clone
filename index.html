@@ -7,89 +7,20 @@
 	<meta name="viewport" content="width=device-width, initial-scale=1.0">
 	<link rel="icon" sizes="32x32" href="/icons/uzum-logo.png" />
 	<link rel="stylesheet" href="/scss/normalize.scss">
-	<link rel="stylesheet" href="/scss/style.scss">
 	<link rel="stylesheet" href="/scss/header.scss">
+	<link rel="stylesheet" href="/scss/footer.scss">
+	<link rel="stylesheet" href="/scss/style.scss">
+	<link rel="stylesheet" href="/scss/popup.scss">
 	<title>Uzum Market &mdash; интернет-магазин</title>
 </head>
 
 <body>
 
 	<div class="wrapper">
-		<header class="header">
-			<div class="header-ceil">
-				<div class="container">
-					<div class="header-ceil__inner">
-						<div class="header-ceil__item header-ceil__item_left">
-							<div class="header-ceil__place">
-								<img class="header-ceil__place-marker" src="/icons/header/place-marker.svg" alt="icon">
-								<div>
-									<span>Город:</span>
-									<select class="header-ceil__select">
-										<option value="Ташкент">Ташкент</option>
-										<option value="Республика Каракалпакстан">Республика Каракалпакстан</option>
-										<option value="Андижанская область">Андижанская область</option>
-										<option value="Бухарская область">Бухарская область</option>
-										<option value="Джизакская область">Джизакская область</option>
-										<option value="Кашкадарьинская область">Кашкадарьинская область</option>
-										<option value="Навоийская область">Навоийская область</option>
-										<option value="Наманганская область">Наманганская область</option>
-										<option value="Самаркандская область">Самаркандская область</option>
-										<option value="Сурхандарьинская область">Сурхандарьинская область</option>
-										<option value="Сырдарьинская область">Сырдарьинская область</option>
-										<option value="Ташкентская область">Ташкентская область</option>
-										<option value="Ферганская область">Ферганская область</option>
-										<option value="Хорезмская область">Хорезмская область</option>
-									</select>
-								</div>
-							</div>
-							<a href="https://uzum.uz/ru/about/delivery-points"
-								class="header-ceil__text header-ceil__text_bold">
-								Пункты выдачи
-							</a>
-						</div>
-						<div class="header-ceil__item header-ceil__item_center">
-							<div class="header-ceil__text header-ceil__text_gray header-ceil__text_lh">
-								Доставим ваш заказ бесплатно — всего за 1 день!
-							</div>
-						</div>
-						<div class="header-ceil__item header-ceil__item_right">
-							<a href="https://uzum.uz/ru/faq"
-								class="header-ceil__text header-ceil__text_gray header-ceil__text_bold">
-								Вопрос-ответ
-							</a>
-							<a href="#" class="header-ceil__text header-ceil__text_gray header-ceil__text_bold">
-								Мои заказы
-							</a>
-							<div class="languages" id="languages">
-								<div class="languages__area"></div>
-								<div class="languages__inner">
-									<div class="languages__item" data-lang-item="ru">
-										<img class="languages__icon" src="/icons/header/ru.svg" alt="icon">
-										<span class="languages__text">Русский</span>
-									</div>
-									<div class="languages__item" data-lang-item="uz">
-										<img class="languages__icon" src="/icons/header/uzb.svg" alt="icon">
-										<span class="languages__text">O'zbekcha</span>
-									</div>
-									<div class="languages__list">
-										<div class="languages__item" data-lang-item="uz">
-											<img class="languages__icon" src="/icons/header/uzb.svg" alt="icon">
-											<span class="languages__text">O'zbekcha</span>
-										</div>
-										<div class="languages__item" data-lang-item="ru">
-											<img class="languages__icon" src="/icons/header/ru.svg" alt="icon">
-											<span class="languages__text">Русский</span>
-										</div>
-									</div>
-								</div>
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-		</header>
+		<header class="header"></header>
 		<main class="main"></main>
 		<footer class="footer"></footer>
+		<div class="popup"></div>
 	</div>
 
 	<script type="module" src="/modules/main.js"></script>
