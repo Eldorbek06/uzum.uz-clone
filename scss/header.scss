@@ -1,0 +1,177 @@
+@import '/scss/style';
+
+.header {
+    user-select: none;
+}
+
+.header-ceil {
+    background-color: #F4F5F5;
+
+    &__inner {
+        height: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 14px;
+        font-family: $inter;
+
+        @media (min-width: $md) {
+            justify-content: space-between;
+        }
+    }
+
+    &__item {
+        display: none;
+        align-items: center;
+        gap: 20px;
+
+        &_left {
+            @media (min-width: $md) {
+                display: flex;
+            }
+        }
+
+        &_center {
+            text-align: center;
+            display: block;
+
+            @media (min-width: $md) {
+                display: none;
+            }
+
+            @media (min-width: $lg) {
+                display: block;
+            }
+        }
+
+        &_right {
+            @media (min-width: $md) {
+                display: flex;
+            }
+        }
+    }
+
+    &__place {
+        cursor: pointer;
+        display: flex;
+        gap: 10px;
+    }
+
+    &__place-marker {
+        width: 12px;
+    }
+
+    &__select {
+        all: unset;
+        width: 80px;
+        white-space: nowrap;
+        text-decoration: underline;
+    }
+
+    &__text {
+        cursor: pointer;
+
+        &_gray {
+            color: gray;
+        }
+
+        &_lh {
+            line-height: .85rem;
+        }
+
+        &_bold {
+            font-weight: 500;
+        }
+    }
+}
+
+.languages {
+    cursor: pointer;
+    position: relative;
+
+    &__area {
+        position: fixed;
+        display: none;
+        z-index: 10;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100vh;
+    }
+
+    &__inner {
+        z-index: 20;
+        position: relative;
+    }
+
+    &__item {
+        display: flex;
+        gap: 5px;
+        align-items: center;
+        margin-left: 8px;
+        padding-left: 10px;
+        padding-right: 10px;
+        width: 120px;
+
+        &:nth-child(2),
+        &:nth-child(4) {
+            display: none;
+        }
+    }
+
+    &__icon {
+        height: 20px;
+    }
+
+    &__text {
+        color: #4B5563;
+    }
+
+    &__list {
+        transition: 0.3s;
+        visibility: hidden;
+        opacity: 0;
+        position: absolute;
+        width: max-content;
+        margin-top: 5px;
+        border-radius: 0 0 6px 6px;
+        box-shadow: 0 0 5px rgba(0, 0, 0, 0.4);
+        background-color: #fff;
+        padding: 5px 0;
+
+        &:hover {
+            background-color: rgba(204, 204, 204, 0.557);
+        }
+    }
+}
+
+.languages-active {
+    .languages__area {
+        display: block;
+    }
+
+    .languages__list {
+        visibility: visible;
+        opacity: 1;
+    }
+}
+
+.langs-uz {
+    [data-lang-item='uz'] {
+        display: flex;
+    }
+
+    [data-lang-item='ru'] {
+        display: none;
+    }
+
+    .languages__list {
+        [data-lang-item='ru'] {
+            display: flex;
+        }
+
+        [data-lang-item='uz'] {
+            display: none;
+        }
+    }
+}
