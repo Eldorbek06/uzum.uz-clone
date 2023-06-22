@@ -283,3 +283,31 @@
         }
     }
 }
+
+.scroll-up {
+    user-select: none;
+    position: fixed;
+    bottom: -52px;
+    right: 25px;
+    background-color: $main-purple;
+    width: 52px;
+    height: 52px;
+    border-radius: 50%;
+    overflow: hidden;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 2px solid white;    
+    transition: .3s;
+
+    &__icon {
+        width: 85%;
+        height: 85%;
+        rotate: 180deg;
+        filter: invert(100%);
+    }
+}
+
+.scroll-up_active{
+    bottom: 25px;
+}

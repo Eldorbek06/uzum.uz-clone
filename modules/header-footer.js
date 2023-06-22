@@ -147,4 +147,21 @@ export function headerFooterJs() {
             }
         })
     }
+
+    let scrollUp = document.querySelector('.scroll-up')
+
+    window.onscroll = () => {
+        if (window.scrollY >= window.innerHeight) {
+            scrollUp.classList.add('scroll-up_active')
+        } else {
+            scrollUp.classList.remove('scroll-up_active')
+        }
+    }
+
+    scrollUp.onclick = () => {
+        window.scrollTo({
+            top: 0,
+            behavior: "smooth"
+        });
+    }
 }

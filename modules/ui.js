@@ -353,6 +353,9 @@ export function footerCreate(place) {
 					</div>
 				</div>
 			</div>
+            <div class="scroll-up">
+				<img class="scroll-up__icon" src="/public/icons/arrow.svg" alt="icon">
+			</div>
 		</div>
     `
 }
