@@ -158,6 +158,13 @@
         }
     }
 
+    &__location-select{
+        all: unset;
+        width: 80px;
+        text-decoration: underline;
+        white-space: nowrap;
+    }
+
     .langs-list-active {
         visibility: visible;
         opacity: 1;
@@ -201,9 +208,8 @@
         background-color: white;
         padding: 0 !important;
         display: none;
-        box-shadow: inset 0 0 10px #c4c4c4;
-        border-radius: 10px;
         overflow: hidden;
+        box-shadow: 0 10px 15px gray;
 
         @media (min-width: 960px) {
             display: block;
@@ -448,6 +454,7 @@
         font-weight: 500;
         overflow-y: scroll;
         transition: .3s;
+        z-index: 10;
     }
 
     &__menu-close {
@@ -618,7 +625,6 @@
         left: 0;
         width: 100vw;
         height: 100vh;
-        background-color: rgba($color: #000000, $alpha: .2);
         z-index: 10;
         transition: .3s;
         visibility: hidden;

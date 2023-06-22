@@ -6,10 +6,25 @@ export function headerCreate(place) {
             <div class="header__top-left">
                 <div class="header__location">
                     <img class="header__location-icon" src="/icons/header/place-marker.svg" alt="icon">
-                    <p class="header__location-text">
+                    <div class="header__location-text">
                         <span class="header__location-text_thin">Город:</span>
-                        <span class="header__location-text_bold">Ташкент</span>
-                    </p>
+                        <select class="header__location-text_bold header__location-select">
+                            <option value="Ташкент">Ташкент</option>
+                            <option value="Республика Каракалпакстан">Республика Каракалпакстан</option>
+                            <option value="Андижанская область">Андижанская область</option>
+                            <option value="Бухарская область">Бухарская область</option>
+                            <option value="Джизакская область">Джизакская область</option>
+                            <option value="Кашкадарьинская область">Кашкадарьинская область</option>
+                            <option value="Навоийская область">Навоийская область</option>
+                            <option value="Наманганская область">Наманганская область</option>
+                            <option value="Самаркандская область">Самаркандская область</option>
+                            <option value="Сурхандарьинская область">Сурхандарьинская область</option>
+                            <option value="Сырдарьинская область">Сырдарьинская область</option>
+                            <option value="Ташкентская область">Ташкентская область</option>
+                            <option value="Ферганская область">Ферганская область</option>
+                            <option value="Хорезмская область">Хорезмская область</option>
+                        </select>
+                    </div>
                 </div>
                 <div class="header__pick-points">Пункты выдачи</div>
             </div>
@@ -151,7 +166,24 @@ export function headerCreate(place) {
     </div>
     <div class="header__menu-item">
         <img style="width: 16px;" src="/icons/header/place-marker.svg" alt="icon">
-        <div class="header__menu-txt">Город: Ташкент</div>
+        <div class="header__menu-txt">Город: 
+            <select class="header__location-text_bold header__location-select">
+                <option value="Ташкент">Ташкент</option>
+                <option value="Республика Каракалпакстан">Республика Каракалпакстан</option>
+                <option value="Андижанская область">Андижанская область</option>
+                <option value="Бухарская область">Бухарская область</option>
+                <option value="Джизакская область">Джизакская область</option>
+                <option value="Кашкадарьинская область">Кашкадарьинская область</option>
+                <option value="Навоийская область">Навоийская область</option>
+                <option value="Наманганская область">Наманганская область</option>
+                <option value="Самаркандская область">Самаркандская область</option>
+                <option value="Сурхандарьинская область">Сурхандарьинская область</option>
+                <option value="Сырдарьинская область">Сырдарьинская область</option>
+                <option value="Ташкентская область">Ташкентская область</option>
+                <option value="Ферганская область">Ферганская область</option>
+                <option value="Хорезмская область">Хорезмская область</option>
+            </select>
+        </div>
     </div>
     <div class="header__menu-item">
         <svg width="24" height="24" viewBox="0 0 24 24" fill="#000" xmlns="http://www.w3.org/2000/svg"
