@@ -299,6 +299,7 @@
     justify-content: center;
     border: 2px solid white;    
     transition: .3s;
+    z-index: 150;
 
     &__icon {
         width: 85%;
