@@ -1,7 +1,16 @@
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
+import { getData } from './reqs';
+import { sliderReload } from './ui';
 
-export function swiperJs() {
+export async function swiperJs() {
+    await getData('/goods').then(({ data }) => {
+        const swiper_products = data.filter(el => el.type == 'kitchen' || el.type == 'furniture')
+        const swiper_wrapper = document.querySelector('.product-slider__wrapper')
+
+        sliderReload(swiper_products, swiper_wrapper)
+    })
+    
     new Swiper('.swiper', {
         loop: true,
         spaceBetween: 10,
@@ -10,7 +19,6 @@ export function swiperJs() {
 
         breakpoints: {
             960: {
-                loop: true,
                 slidesPerView: 1,
                 spaceBetween: 0
             }

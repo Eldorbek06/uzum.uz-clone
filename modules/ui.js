@@ -402,3 +402,51 @@ export function popupCreate(place) {
         </div>
     `
 }
+
+export function sliderReload(data, place) {
+    place.innerHTML = ''
+    for (let i = 0; i <= data.length - 1; i++) {
+        let fromLastEl = data[data.length - 1 - i]
+
+        if (i % 2) {
+            let salePrice = Math.round(data[i].price - (data[i].price / 100 * data[i].salePercentage)) / 1000 + ' &#8381;'
+            let price = data[i].price / 1000 + ' &#8381;'
+
+            place.innerHTML += `
+                <div class="swiper-slide product-slide">
+                    <div class="product-slide__info">
+                        <h2 class="product-slide__title">${data[i].title}</h2>
+                        <div class="product-slide__price-block">
+                            <span class="product-slide__sale-price">${salePrice}</span>
+                            ${data[i].salePercentage ? `<span class="product-slide__sale-price">/</span><span class="product-slide__real-price">${price}</span>` : ''}
+                        </div>
+                        <p class="product-slide__desc">${data[i].description}</p>
+                    </div>
+                    <div class="product-slide__image-block">
+                        <img class="product-slide__image" src="${data[i].media.length ? data[i].media[0] : ''}" alt="image">
+                    </div>
+                </div>
+            `
+        } else {
+            let salePrice = Math.round(fromLastEl.price - (fromLastEl.price / 100 * fromLastEl.salePercentage)) / 1000 + ' &#8381;'
+            let price = fromLastEl.price / 1000 + ' &#8381;'
+
+            place.innerHTML += `
+                <div class="swiper-slide product-slide">
+                    <div class="product-slide__info">
+                        <h2 class="product-slide__title">${fromLastEl.title}</h2>
+                        <div class="product-slide__price-block">
+                            <span class="product-slide__sale-price">${salePrice}</span>
+                            <span class="product-slide__sale-price">/</span>
+                            ${fromLastEl.salePercentage ? `<span class="product-slide__real-price">${price}</span>` : ''}
+                        </div>
+                        <p class="product-slide__desc">${fromLastEl.description}</p>
+                    </div>
+                    <div class="product-slide__image-block">
+                        <img class="product-slide__image" src="${fromLastEl.media.length ? fromLastEl.media[0] : ''}" alt="image">
+                    </div>
+                </div>
+            `
+        }
+    }
+}

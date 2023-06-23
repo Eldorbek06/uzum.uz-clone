@@ -11,7 +11,6 @@
         height: 40px;
         background-color: rgba($color: white, $alpha: .5);
         border-radius: 50%;
-        visibility: hidden;
 
         &::after,
         &::after {
@@ -46,6 +45,7 @@
         justify-content: start;
         align-items: center;
         position: relative;
+        cursor: pointer;
 
         &__info {
             color: white;
@@ -126,7 +126,7 @@
         }
 
         &__image-block {
-            width: 100%;
+            width: 50%;
             position: absolute;
             right: 0;
             top: 0;
@@ -138,8 +138,7 @@
             height: 100%;
             width: 100%;
             object-fit: cover;
-            object-position: center;
-            clip-path: circle(50% at 100% 50%);
+            clip-path: circle(100% at 100% 50%);
         }
 
         @media (max-width: $md) {
