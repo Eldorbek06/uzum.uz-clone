@@ -12,6 +12,7 @@
 	<link rel="stylesheet" href="/scss/style.scss">
 	<link rel="stylesheet" href="/scss/popup.scss">
 	<link rel="stylesheet" href="/scss/swiper.scss">
+	<link rel="stylesheet" href="/scss/product-blocks.scss">
 	<title>Uzum Market &mdash; интернет-магазин</title>
 </head>
 
@@ -22,24 +23,144 @@
 		<main class="main">
 			<div class="swiper product-slider">
 				<div class="swiper-wrapper product-slider__wrapper">
-					<div class="swiper-slide product-slide">
-						<div class="product-slide__info">
-							<h2 class="product-slide__title">${fromLastEl.title}</h2>
-							<div class="product-slide__price-block">
-								<span class="product-slide__sale-price">${salePrice}</span>
-								<span class="product-slide__sale-price">/</span>
-								${fromLastEl.salePercentage ? `<span class="product-slide__real-price">${price}</span>` : ''}
-							</div>
-							<p class="product-slide__desc">${fromLastEl.description}</p>
-						</div>
-						<div class="product-slide__image-block">
-							<img class="product-slide__image" src="https://img.mvideo.ru/Big/20063431bb12.jpg" alt="image">
-						</div>
-					</div>
+					<div class="swiper-slide product-slide"></div>
 				</div>
 				<div class="swiper-pagination"></div>
 				<div class="swiper-button-prev"></div>
 				<div class="swiper-button-next"></div>
+			</div>
+			<div class="container">
+				<div class="products-wrapper">
+					<div class="products-type">
+						<h2 class="products-type__heading">
+							<span>Lorem, ipsum.</span>
+							<img src="/public/icons/arrow.svg" alt="icon">
+						</h2>
+						<div class="products-type__grid-block">
+							<div class="product-card">
+								<div class="product-card__image-block">
+									<img class="product-card__image" src="/public/icons/header/ru.svg" alt="image">
+									<div class="product-card__fav-icons">
+										<img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
+											alt="icon">
+										<img class="product-card__fav_active"
+											src="/public/icons/product-cart/fav-active.svg" alt="icon">
+									</div>
+								</div>
+								<div class="product-card__info">
+									<div class="product-card__title">
+										<span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat,
+											ea?</span>
+										<div class="product-card__rating">
+											<img src="/public/icons/product-cart/rating.svg" alt="icon">
+											<span>5.0 (568 оценок)</span>
+										</div>
+									</div>
+									<div class="product-card__credit">600 руб/мес</div>
+									<div class="product-card__floor">
+										<div class="product-card__price-block">
+											<div class="product-card__real-price">1.000.000 &#x20BD;</div>
+											<div class="product-card__sale-price">200.000 &#x20BD;</div>
+										</div>
+										<img class="product-card__add-to-cart"
+											src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+									</div>
+								</div>
+							</div>
+							<div class="product-card">
+								<div class="product-card__image-block">
+									<img class="product-card__image" src="/public/icons/header/ru.svg" alt="image">
+									<div class="product-card__fav-icons">
+										<img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
+											alt="icon">
+										<img class="product-card__fav_active"
+											src="/public/icons/product-cart/fav-active.svg" alt="icon">
+									</div>
+								</div>
+								<div class="product-card__info">
+									<div class="product-card__title">
+										<span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat,
+											ea?</span>
+										<div class="product-card__rating">
+											<img src="/public/icons/product-cart/rating.svg" alt="icon">
+											<span>5.0 (568 оценок)</span>
+										</div>
+									</div>
+									<div class="product-card__credit">600 руб/мес</div>
+									<div class="product-card__floor">
+										<div class="product-card__price-block">
+											<div class="product-card__real-price">1.000.000 &#x20BD;</div>
+											<div class="product-card__sale-price">200.000 &#x20BD;</div>
+										</div>
+										<img class="product-card__add-to-cart"
+											src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+									</div>
+								</div>
+							</div>
+							<div class="product-card">
+								<div class="product-card__image-block">
+									<img class="product-card__image" src="/public/icons/header/ru.svg" alt="image">
+									<div class="product-card__fav-icons">
+										<img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
+											alt="icon">
+										<img class="product-card__fav_active"
+											src="/public/icons/product-cart/fav-active.svg" alt="icon">
+									</div>
+								</div>
+								<div class="product-card__info">
+									<div class="product-card__title">
+										<span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat,
+											ea?</span>
+										<div class="product-card__rating">
+											<img src="/public/icons/product-cart/rating.svg" alt="icon">
+											<span>5.0 (568 оценок)</span>
+										</div>
+									</div>
+									<div class="product-card__credit">600 руб/мес</div>
+									<div class="product-card__floor">
+										<div class="product-card__price-block">
+											<div class="product-card__real-price">1.000.000 &#x20BD;</div>
+											<div class="product-card__sale-price">200.000 &#x20BD;</div>
+										</div>
+										<img class="product-card__add-to-cart"
+											src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+									</div>
+								</div>
+							</div>
+							<div class="product-card">
+								<div class="product-card__image-block">
+									<img class="product-card__image" src="/public/icons/header/ru.svg" alt="image">
+									<div class="product-card__fav-icons">
+										<img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
+											alt="icon">
+										<img class="product-card__fav_active"
+											src="/public/icons/product-cart/fav-active.svg" alt="icon">
+									</div>
+								</div>
+								<div class="product-card__info">
+									<div class="product-card__title">
+										<span>Lorem ipsum dolor sit, amet consectetur adipisicing elit. Fugiat,
+											ea?</span>
+										<div class="product-card__rating">
+											<img src="/public/icons/product-cart/rating.svg" alt="icon">
+											<span>5.0 (568 оценок)</span>
+										</div>
+									</div>
+									<div class="product-card__credit">600 руб/мес</div>
+									<div class="product-card__floor">
+										<div class="product-card__price-block">
+											<div class="product-card__real-price">1.000.000 &#x20BD;</div>
+											<div class="product-card__sale-price">200.000 &#x20BD;</div>
+										</div>
+										<img class="product-card__add-to-cart"
+											src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+									</div>
+								</div>
+							</div>
+						</div>
+						<div class="products-type__show-more">Показать ещё</div>
+					</div>
+				</div>
 			</div>
 		</main>
 		<footer class="footer"></footer>
