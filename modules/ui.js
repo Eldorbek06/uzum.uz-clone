@@ -78,8 +78,10 @@ export function headerCreate(place) {
                 </div>
             </div>
             <img class="header__menu-icon" src="/icons/header/menu-icon.svg" alt="icon">
+            <a href="/">
             <img class="header__logo_sm" src="/icons/header/uzum-logo-sm.svg" alt="logo">
             <img class="header__logo_lg" src="/icons/header/uzum-logo.svg" alt="logo">
+            </a>
             <div class="header__search">
                 <div class="header__catalog" id="catal-btn">
                     <img class="header__catalog-icon catal-visible" src="/icons/header/catalog-icon.svg"
@@ -462,7 +464,7 @@ export function realoadProductTypeBlocks(data, place) {
                         <img src="/public/icons/arrow.svg" alt="icon">
                     </h2>
                     <div data-product-type="${item}" class="products-type__grid-block"></div>
-                    <div class="products-type__show-more">Показать ещё</div>
+                    <div data-is-shown="false" class="products-type__show-more">Показать ещё</div>
                 </div>
             `
         }

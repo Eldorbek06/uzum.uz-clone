@@ -8,6 +8,10 @@ $lg: 1280px;
 $inter: 'Inter';
 $roboto: 'Roboto';
 
+html{
+    scroll-behavior: smooth;
+}
+
 .container {
     max-width: 1280px;
     padding: 0 10px;
