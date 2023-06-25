@@ -30,8 +30,8 @@
     &__grid-block {
         display: grid;
         grid-template-columns: repeat(2, 1fr);
-        column-gap: 8px;
-        row-gap: 12px;
+        column-gap: 12px;
+        row-gap: 16px;
         width: 100%;
 
         @media (min-width: $sm) {
@@ -40,8 +40,8 @@
 
         @media (min-width: $md) {
             grid-template-columns: repeat(4, 1fr);
-            column-gap: 12px;
-            row-gap: 16px;
+            column-gap: 16px;
+            row-gap: 20px;
         }
 
         @media (min-width: $lg) {
@@ -78,6 +78,7 @@
     gap: 10px;
     transition: .2s ease-in-out;
     cursor: pointer;
+    width: 100%;
 
     &:hover {
         box-shadow: 0 2px 2px rgba($color: gray, $alpha: .3);
@@ -89,18 +90,18 @@
 
     &__image-block {
         width: 100%;
-        aspect-ratio: 2/3;
-        background-color: rgba($color: gray, $alpha: .15);
+        height: 100%;
         border-radius: 8px;
         position: relative;
         display: flex;
         align-items: center;
         justify-content: center;
+        overflow: hidden;
     }
 
     &__image {
-        width: 85%;
-        height: 85%;
+        width: 100% ;
+        object-fit: contain;
         transition: .2s ease-in-out;
     }
 
@@ -132,6 +133,7 @@
         flex-direction: column;
         align-items: start;
         gap: 8px;
+        width: 100%;
 
         span {
             display: -webkit-box;
@@ -161,7 +163,6 @@
         background-color: #FFFF00;
         border-radius: 5px;
         font-size: .85em;
-
     }
 
     &__floor {
@@ -177,12 +178,17 @@
         align-items: start;
         gap: 5px;
         font-size: 0.85em;
+        font-weight: 500;
     }
 
     &__real-price {
         font-size: 0.9em;
         text-decoration: line-through;
         color: gray;
+    }
+
+    &__sale-price {
+        font-size: 1.15em;
     }
 
     &__add-to-cart {

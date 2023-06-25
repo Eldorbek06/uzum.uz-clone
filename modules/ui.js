@@ -450,3 +450,61 @@ export function sliderReload(data, place) {
         }
     }
 }
+
+export function realoadProductTypeBlocks(data, place) {
+    place.innerHTML = ''
+    for (let item of data) {
+        if (item != 'PC') {
+            place.innerHTML += `
+                <div class="products-type">
+                    <h2 class="products-type__heading">
+                        <span>${item}</span>
+                        <img src="/public/icons/arrow.svg" alt="icon">
+                    </h2>
+                    <div data-product-type="${item}" class="products-type__grid-block"></div>
+                    <div class="products-type__show-more">Показать ещё</div>
+                </div>
+            `
+        }
+    }
+}
+
+export function reloadProductCards(data, place) {
+    place.innerHTML = ''
+    for (let item of data) {
+        let creditSum = Math.round((item.price / 100 * 44 + item.price) / 12),
+            salePrice = Math.round(item.price - item.price / 100 * 44) / 1000
+
+        place.innerHTML += `
+            <div class="product-card">
+                <div class="product-card__image-block">
+                    <img class="product-card__image" src="${item.media[0]}" alt="image">
+                    <div class="product-card__fav-icons">
+                        <img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
+                            alt="icon">
+                        <img class="product-card__fav_active"
+                            src="/public/icons/product-cart/fav-active.svg" alt="icon">
+                    </div>
+                </div>
+                <div class="product-card__info">
+                    <div class="product-card__title">
+                        <span>${item.title}</span>
+                        <div class="product-card__rating">
+                            <img src="/public/icons/product-cart/rating.svg" alt="icon">
+                            <span>${item.rating}</span>
+                        </div>
+                    </div>
+                    <div class="product-card__credit">${creditSum} руб/мес</div>
+                    <div class="product-card__floor">
+                        <div class="product-card__price-block">
+                            ${item.salePercentage ? `<div class="product-card__real-price">${item.price} &#x20BD;</div>` : ''}
+                            <div class="product-card__sale-price">${salePrice} &#x20BD;</div>
+                        </div>
+                        <img class="product-card__add-to-cart"
+                            src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+                    </div>
+                </div>
+            </div>       
+        `
+    }
+}
