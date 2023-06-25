@@ -41,14 +41,12 @@ export function popupJs(place) {
         el.onclick = () => {
             user_name = localStorage.getItem('user-name')
             if (localStorage.getItem('user-name') != null) {
-                console.log('sign-out');
                 if (confirm('Выйти из аккаунта?')) {
                     localStorage.removeItem('user-name')
                     document.querySelector('[data-reg]').innerHTML = 'Войти'
                     alert('Вы вышли из аккаунта!')
                 }
             } else {
-                console.log('sign-in');
                 popup_change(forms, 'sign-in')
                 popup_toggle(place)
             }
