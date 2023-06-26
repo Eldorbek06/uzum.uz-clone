@@ -39,7 +39,7 @@ export function productBlocksJs() {
             productTypeBlocks.forEach(el => {
                 let blockType = el.dataset.productType
                 let сertainProducts = data.filter(product => product.type == blockType)
-    
+
                 productSetByWindowWidth(сertainProducts, el)
             })
         }
@@ -62,6 +62,12 @@ export function productBlocksJs() {
                     btn.dataset.isShown = "false"
                 }
             }
+        })
+
+        let goToProductPageBtns = document.querySelectorAll('[data-product-id]')
+
+        goToProductPageBtns.forEach(btn => btn.onclick = () => {
+            localStorage.setItem('product-id', btn.dataset.productId)
         })
     })
 }

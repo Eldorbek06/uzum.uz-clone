@@ -477,36 +477,76 @@ export function reloadProductCards(data, place) {
         let creditSum = Math.round((item.price / 100 * 44 + item.price) / 12),
             salePrice = Math.round(item.price - item.price / 100 * 44) / 1000
 
-        place.innerHTML += `
-            <div class="product-card">
-                <div class="product-card__image-block">
-                    <img class="product-card__image" src="${item.media[0]}" alt="image">
-                    <div class="product-card__fav-icons">
-                        <img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
-                            alt="icon">
-                        <img class="product-card__fav_active"
-                            src="/public/icons/product-cart/fav-active.svg" alt="icon">
-                    </div>
+        if(place.classList.contains('same-products-slider__wrapper')){
+            place.innerHTML += `
+                <div class="same-products-slider__slide swiper-slide">
+                    <div class="product-card">
+                        <div class="product-card__image-block">
+                            <a data-product-id="${item.id}" href="/pages/product.html">
+                                <img class="product-card__image" src="${item.media[0]}" alt="image">
+                            </a>
+                            <div class="product-card__fav-icons">
+                                <img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
+                                    alt="icon">
+                                <img class="product-card__fav_active"
+                                    src="/public/icons/product-cart/fav-active.svg" alt="icon">
+                            </div>
+                        </div>
+                        <div class="product-card__info">
+                            <div class="product-card__title">
+                                <a data-product-id="${item.id}" href="pages/product.html">${item.title}</a>
+                                <div class="product-card__rating">
+                                    <img src="/public/icons/product-cart/rating.svg" alt="icon">
+                                    <span>${item.rating}</span>
+                                </div>
+                            </div>
+                            <div class="product-card__credit">${creditSum} руб/мес</div>
+                            <div class="product-card__floor">
+                                <div class="product-card__price-block">
+                                    ${item.salePercentage ? `<div class="product-card__real-price">${item.price} &#x20BD;</div>` : ''}
+                                    <div class="product-card__sale-price">${salePrice} &#x20BD;</div>
+                                </div>
+                                <img class="product-card__add-to-cart"
+                                    src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+                            </div>
+                        </div>
+                    </div>       
                 </div>
-                <div class="product-card__info">
-                    <div class="product-card__title">
-                        <span>${item.title}</span>
-                        <div class="product-card__rating">
-                            <img src="/public/icons/product-cart/rating.svg" alt="icon">
-                            <span>${item.rating}</span>
+            `
+        } else {
+            place.innerHTML += `
+                <div class="product-card">
+                    <div class="product-card__image-block">
+                        <a data-product-id="${item.id}" href="/pages/product.html">
+                            <img class="product-card__image" src="${item.media[0]}" alt="image">
+                        </a>
+                        <div class="product-card__fav-icons">
+                            <img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
+                                alt="icon">
+                            <img class="product-card__fav_active"
+                                src="/public/icons/product-cart/fav-active.svg" alt="icon">
                         </div>
                     </div>
-                    <div class="product-card__credit">${creditSum} руб/мес</div>
-                    <div class="product-card__floor">
-                        <div class="product-card__price-block">
-                            ${item.salePercentage ? `<div class="product-card__real-price">${item.price} &#x20BD;</div>` : ''}
-                            <div class="product-card__sale-price">${salePrice} &#x20BD;</div>
+                    <div class="product-card__info">
+                        <div class="product-card__title">
+                            <a data-product-id="${item.id}" href="pages/product.html">${item.title}</a>
+                            <div class="product-card__rating">
+                                <img src="/public/icons/product-cart/rating.svg" alt="icon">
+                                <span>${item.rating}</span>
+                            </div>
                         </div>
-                        <img class="product-card__add-to-cart"
-                            src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+                        <div class="product-card__credit">${creditSum} руб/мес</div>
+                        <div class="product-card__floor">
+                            <div class="product-card__price-block">
+                                ${item.salePercentage ? `<div class="product-card__real-price">${item.price} &#x20BD;</div>` : ''}
+                                <div class="product-card__sale-price">${salePrice} &#x20BD;</div>
+                            </div>
+                            <img class="product-card__add-to-cart"
+                                src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
+                        </div>
                     </div>
-                </div>
-            </div>       
-        `
+                </div>       
+            `
+        }
     }
 }

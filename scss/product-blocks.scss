@@ -79,12 +79,13 @@
     transition: .2s ease-in-out;
     cursor: pointer;
     width: 100%;
+    font-family: $inter;
 
     &:hover {
         box-shadow: 0 2px 2px rgba($color: gray, $alpha: .3);
 
         .product-card__image {
-            scale: 1.05;
+            scale: 1.04;
         }
     }
 
@@ -114,6 +115,11 @@
     &__fav {
         cursor: pointer;
         width: 20px;
+        transition: .2s;
+
+        &:hover{
+            filter: invert(100%);
+        }
 
         &_active {
             display: none;
@@ -135,11 +141,12 @@
         gap: 8px;
         width: 100%;
 
-        span {
+        a {
             display: -webkit-box;
             -webkit-box-orient: vertical;
             overflow: hidden;
             -webkit-line-clamp: 2;
+            color: black;
         }
     }
 
@@ -194,6 +201,11 @@
     &__add-to-cart {
         width: 31px;
         height: 31px;
-        cursor: pointer;
+        transition: .2s;
+        border-radius: 50%;
+
+        &:hover{
+            background-color: rgba($color: gray, $alpha: .2);
+        }
     }
 }
