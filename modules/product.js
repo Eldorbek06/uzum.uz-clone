@@ -17,11 +17,13 @@ getData('/goods/' + productId).then(({ data }) => {
         priceBlock = document.querySelector('.product-info__price-block'),
         title = document.querySelector('.product-info__title'),
         productDescr = document.querySelector('.product-description__text'),
-        creditSumView = document.querySelector('.product-info__credit-item_yellow')
+        creditSumView = document.querySelector('.product-info__credit-item_yellow'),
+        siteTitle = document.querySelector('title')
 
     title.innerHTML = data.title
     creditSumView.innerHTML = `От ${creditSum} &#8381;/мес`
     productDescr.innerHTML = data.description
+    siteTitle.innerHTML = 'Купить ' + data.title
 
     if (data.salePercentage) {
         priceBlock.innerHTML = `
@@ -106,7 +108,19 @@ getData('/goods/' + productId).then(({ data }) => {
             nextEl: '.swiper-button-next',
             prevEl: '.swiper-button-prev',
         },
-        slidesPerView: 5,
-        spaceBetween: 40
+        spaceBetween: 40,
+        slidesPerView: 2,
+
+        breakpoints: {
+            1200:{
+                slidesPerView: 5,
+            },
+            768: {
+                slidesPerView: 4,
+            },
+            590:{
+                slidesPerView: 3,
+            }
+        }
     })
 })
