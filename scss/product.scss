@@ -279,6 +279,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        user-select: none;
     }
 
     &__num {
@@ -296,6 +297,16 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        user-select: none;
+    }
+
+    &__maximum {
+        position: absolute;
+        top: 50%;
+        translate: 0 -50%;
+        right: -150%;
+        font-size: 14px;
+        color: $main-purple;
     }
 }
 
@@ -358,5 +369,17 @@ hr {
             font-size: 20px;
             color: black;
         }
+    }
+}
+
+.not-available-plus {
+    .product-counter__plus {
+        filter: invert(50%);
+    }
+}
+
+.not-available-minus {
+    .product-counter__minus {
+        filter: invert(50%);
     }
 }

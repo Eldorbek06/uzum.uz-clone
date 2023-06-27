@@ -10,8 +10,8 @@ let productId = localStorage.getItem('product-id')
 
 getData('/goods/' + productId).then(({ data }) => {
     let creditSum = Math.round((data.price / 100 * 44 + data.price) / 12),
-        salePrice = Math.round(data.price - data.price / 100 * 44) / 1000,
-        price = data.price / 1000,
+        salePrice = Math.round(data.price - data.price / 100 * 44),
+        price = data.price,
         sliderWrappers = document.querySelectorAll('[data-main-swipers]'),
         colorsContainer = document.querySelector('.product-info__color'),
         priceBlock = document.querySelector('.product-info__price-block'),
@@ -28,14 +28,13 @@ getData('/goods/' + productId).then(({ data }) => {
     if (data.salePercentage) {
         priceBlock.innerHTML = `
         <span class="name">Цена:</span>
-        <span class="product-info__sale-price">${salePrice} &#8381;</span>
-        <span>/</span>
-        <span class="product-info__real-price">${price} &#8381;</span>
+        <span class="product-info__sale-price" id="sale-price-view">${salePrice} &#8381; /</span>
+        <span class="product-info__real-price" id="real-price-view">${price} &#8381;</span>
         `
     } else {
         priceBlock.innerHTML = `
             <span class="name">Цена:</span>
-            <span class="product-info__sale-price">${price} &#8381;</span>
+            <span class="product-info__sale-price" id="real-price-view">${price} &#8381;</span>
         `
     }
 
@@ -95,7 +94,7 @@ getData('/goods/' + productId).then(({ data }) => {
         let sameProductsSliderWrapper = document.querySelector('.same-products-slider__wrapper')
 
         reloadProductCards(data, sameProductsSliderWrapper)
-        
+
         let goToProductPageBtns = document.querySelectorAll('[data-product-id]')
 
         goToProductPageBtns.forEach(btn => btn.onclick = () => {
@@ -112,15 +111,84 @@ getData('/goods/' + productId).then(({ data }) => {
         slidesPerView: 2,
 
         breakpoints: {
-            1200:{
+            1200: {
                 slidesPerView: 5,
             },
             768: {
                 slidesPerView: 4,
             },
-            590:{
+            590: {
                 slidesPerView: 3,
             }
         }
     })
+
+
+    let maximumNumber = 10,
+        counter = 1,
+        realPriceView = document.querySelector('#real-price-view'),
+        salePriceView = document.querySelector('#sale-price-view'),
+        counterElement = document.querySelector(".product-counter__num"),
+        increaseButton = document.querySelector(".product-counter__plus"),
+        decreaseButton = document.querySelector(".product-counter__minus"),
+        counterBlock = counterElement.parentElement,
+        maximumNumberView = document.querySelector('.product-counter__maximum')
+
+
+    maximumNumberView.innerHTML = 'В наличии всего ' + maximumNumber + ' штук'
+    checkAvailability(counter)
+
+    increaseButton.onclick = () => {
+        if (counter < maximumNumber) {
+            counter++;
+            calculatePrice(counter)
+            displayPrice(counter)
+        }
+        if (counter == maximumNumber) {
+            setTimeout(() => {
+                alert('В наличии только ' + maximumNumber + ' штук')
+            }, 100);
+        }
+    };
+
+    decreaseButton.onclick = () => {
+        if (counter > 1) {
+            counter--;
+            calculatePrice(counter)
+            displayPrice(counter)
+        }
+    };
+
+    function calculatePrice(counter) {
+        return price * counter;
+    }
+
+    function calculateSalePrice(counter) {
+        return salePrice * counter;
+    }
+
+    function displayPrice(counter) {
+        let calculatedPrice = calculatePrice(counter);
+        let calculatedSalePrice = calculateSalePrice(counter);
+        if (counter === 1) {
+            realPriceView.innerHTML = calculatedPrice + '&#8381;'
+            salePriceView.innerHTML = calculatedSalePrice + '&#8381 /'
+        } else {
+            realPriceView.innerHTML = ''
+            salePriceView.innerHTML = calculatedSalePrice + '&#8381'
+        }
+        counterElement.innerHTML = counter
+        checkAvailability(counter)
+    }
+
+    function checkAvailability(number) {
+        if (number == 1) {
+            counterBlock.classList.add('not-available-minus')
+        } else if (number == 10) {
+            counterBlock.classList.add('not-available-plus')
+        } else {
+            counterBlock.classList.remove('not-available-minus')
+            counterBlock.classList.remove('not-available-plus')
+        }
+    }
 })
