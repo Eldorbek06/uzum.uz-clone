@@ -5,14 +5,12 @@ import '../scss/product.scss'
 import '../scss/product-blocks.scss'
 import { deleteData, getData, postData } from './reqs';
 import { reloadProductCards } from './ui';
-import axios from 'axios';
-import { TRUE } from 'sass';
 
 let productId = localStorage.getItem('product-id')
 
 getData('/goods/' + productId).then(({ data }) => {
-    let creditSum = Math.round((data.price / 100 * 44 + data.price) / 12),
-        salePrice = Math.round(data.price - data.price / 100 * 44),
+    let creditSum = Math.round((data.price / 100 * data.salePercentage + data.price) / 12),
+        salePrice = Math.round(data.price - data.price / 100 * data.salePercentage),
         price = data.price,
         sliderWrappers = document.querySelectorAll('[data-main-swipers]'),
         colorsContainer = document.querySelector('.product-info__color'),
@@ -187,13 +185,11 @@ getData('/goods/' + productId).then(({ data }) => {
         }
     }
 
-
-
     let addToCartBtn = document.querySelector('[data-add-to-cart]'),
         name = localStorage.getItem('user-name'),
         deleteKey = false
 
-    getData(`/cart`).then(({ data }) => {
+    getData(`/cart?userName=${name}`).then(({ data }) => {
         for (let item of data) {
             if (item.id == productId) {
                 addToCartBtn.classList.add('in-the-cart')

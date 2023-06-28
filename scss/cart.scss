@@ -89,6 +89,7 @@
         gap: 10px;
         align-items: center;
         user-select: none;
+        cursor: pointer;
     }
 
     &__checkbox {
@@ -125,6 +126,12 @@
     }
 }
 
+.price-for-one-active {
+    bottom: -50%;
+    visibility: visible;
+    opacity: 1;
+}
+
 .cart-product {
     width: 100%;
     display: flex;
@@ -141,10 +148,19 @@
     &__left {
         display: flex;
         align-items: center;
+        justify-content: space-between;
+        width: 80%;
+    }
+
+    &__left-box{
+        display: flex;
+        align-items: center;
+        gap: 10px;
     }
 
     &__checkbox {
         margin-left: 1px;
+        cursor: pointer;
     }
 
     &__info {
@@ -168,7 +184,6 @@
     &__info-inner {
         display: flex;
         flex-direction: column;
-        justify-content: start;
         gap: 30px;
     }
 
@@ -199,6 +214,7 @@
         gap: 8px;
         filter: invert(50%);
         font-size: .9em;
+        cursor: pointer;
     }
 
     &__delete-icon {
@@ -412,5 +428,28 @@
             font-size: 20px;
             color: black;
         }
+    }
+}
+
+.product-counter__maximum {
+    top: -50%;
+    right: 50%;
+    white-space: nowrap;
+    translate: 50% 0;
+    position: absolute;
+    font-size: 12px;
+    color: $main-purple;
+}
+
+
+.not-available-plus {
+    .product-counter__plus {
+        filter: invert(50%);
+    }
+}
+
+.not-available-minus {
+    .product-counter__minus {
+        filter: invert(50%);
     }
 }

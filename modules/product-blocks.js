@@ -83,26 +83,24 @@ function addToCartBtnsReload() {
     addToCartBtns.forEach(btn => {
         let productId = btn.dataset.addToCart
 
-        getData(`/cart`).then(({ data }) => data.forEach(el => {
-            if (el.productId == productId) {
+        getData(`/cart?userName=${name}`).then(({ data }) => data.forEach(el => {
+            if (el.id == productId) {
                 btn.classList.add('in-the-cart')
             }
         }))
 
         btn.onclick = () => {
-            getData(`/cart?productId=${productId}`)
-                .then(({ data }) => {
-                    if (!data.length) {
-                        postData('/cart', { productId: productId, userName: name })
-                            .then(res => {
-                                if (res.statusText == "Created") {
-                                    alert('Товар добавлен в корзину')
-                                    btn.classList.add('in-the-cart')
-                                }
-                            })
-                    } else {
-                        alert('Это товар есть в корзине')
-                    }
+            getData(`/cart/${productId}`)
+                .then(() => {
+                    alert('Это товар есть в корзине')
+                }).catch(() => {
+                    postData('/cart', { id: productId, userName: name, quantity: 1 })
+                        .then(res => {
+                            if (res.statusText == "Created") {
+                                alert('Товар добавлен в корзину')
+                                btn.classList.add('in-the-cart')
+                            }
+                        })
                 })
         }
     })
