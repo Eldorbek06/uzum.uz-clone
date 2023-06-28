@@ -13,3 +13,9 @@ export async function postData(path, body) {
 
     return res
 }
+
+export async function deleteData(path, config) {
+    const res = await axios.delete(BASE_URL + path, config)
+
+    return res
+}

@@ -950,6 +950,12 @@
       "id": 1
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "id": "2",
+      "userName": "Eldor",
+      "quantity": 3
+    }
+  ],
   "favorites": []
 }

@@ -72,6 +72,10 @@
     }
 }
 
+.in-the-cart{
+    filter: invert(50%); 
+}
+
 .product-card {
     display: flex;
     flex-direction: column;

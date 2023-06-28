@@ -206,6 +206,7 @@
         font-weight: 500;
         cursor: pointer;
         height: 40px;
+        transition: .2s;
 
         @media (max-width: $xmd) {
             width: 100%;
@@ -341,7 +342,7 @@ hr {
 }
 
 .same-products-slider {
-    margin: 100px 0;
+    margin: 100px auto;
     width: 1280px;
     padding: 0 20px;
 
@@ -382,4 +383,10 @@ hr {
     .product-counter__minus {
         filter: invert(50%);
     }
+}
+
+.in-the-cart {
+    color: #AAADB6;
+    background-color: #F5F6F7;
+    filter: invert(0%);
 }

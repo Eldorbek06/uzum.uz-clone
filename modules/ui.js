@@ -108,10 +108,10 @@ export function headerCreate(place) {
                     <img class="header__center-icon" src="/icons/header/fav.svg" alt="icon">
                     <span class="header__ceter-item-txt">Избранное</span>
                 </div>
-                <div class="header__center-item">
+                <a href="/pages/cart.html" style="color: black;" class="header__center-item">
                     <img class="header__center-icon" src="/icons/header/shop-bag.svg" alt="icon">
                     <span class="header__ceter-item-txt">Корзина</span>
-                </div>
+                </a>
             </div>
         </div>
     </div>
@@ -477,9 +477,9 @@ export function reloadProductCards(data, place) {
         let creditSum = Math.round((item.price / 100 * 44 + item.price) / 12),
             salePrice = Math.round(item.price - item.price / 100 * 44) / 1000
 
-        if(place.classList.contains('same-products-slider__wrapper')){
+        if(place.classList.contains('swiper-wrapper')){
             place.innerHTML += `
-                <div class="same-products-slider__slide swiper-slide">
+                <div class="swiper-slide">
                     <div class="product-card">
                         <div class="product-card__image-block">
                             <a data-product-id="${item.id}" href="/pages/product.html">
@@ -506,7 +506,7 @@ export function reloadProductCards(data, place) {
                                     ${item.salePercentage ? `<div class="product-card__real-price">${item.price} &#x20BD;</div>` : ''}
                                     <div class="product-card__sale-price">${salePrice} &#x20BD;</div>
                                 </div>
-                                <img class="product-card__add-to-cart"
+                                <img data-add-to-cart="${item.id}" class="product-card__add-to-cart"
                                     src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
                             </div>
                         </div>
@@ -541,7 +541,7 @@ export function reloadProductCards(data, place) {
                                 ${item.salePercentage ? `<div class="product-card__real-price">${item.price} &#x20BD;</div>` : ''}
                                 <div class="product-card__sale-price">${salePrice} &#x20BD;</div>
                             </div>
-                            <img class="product-card__add-to-cart"
+                            <img data-add-to-cart="${item.id}" class="product-card__add-to-cart"
                                 src="/public/icons/product-cart/add-to-cart.svg" alt="icon">
                         </div>
                     </div>

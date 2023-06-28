@@ -3,8 +3,10 @@ import 'swiper/css/bundle';
 import './standard'
 import '../scss/product.scss'
 import '../scss/product-blocks.scss'
-import { getData } from './reqs';
+import { deleteData, getData, postData } from './reqs';
 import { reloadProductCards } from './ui';
+import axios from 'axios';
+import { TRUE } from 'sass';
 
 let productId = localStorage.getItem('product-id')
 
@@ -25,18 +27,11 @@ getData('/goods/' + productId).then(({ data }) => {
     productDescr.innerHTML = data.description
     siteTitle.innerHTML = 'Купить ' + data.title
 
-    if (data.salePercentage) {
-        priceBlock.innerHTML = `
+    priceBlock.innerHTML = `
         <span class="name">Цена:</span>
         <span class="product-info__sale-price" id="sale-price-view">${salePrice} &#8381; /</span>
         <span class="product-info__real-price" id="real-price-view">${price} &#8381;</span>
-        `
-    } else {
-        priceBlock.innerHTML = `
-            <span class="name">Цена:</span>
-            <span class="product-info__sale-price" id="real-price-view">${price} &#8381;</span>
-        `
-    }
+    `
 
     data.colors.forEach(color => {
         colorsContainer.innerHTML += `
@@ -140,7 +135,7 @@ getData('/goods/' + productId).then(({ data }) => {
 
     increaseButton.onclick = () => {
         if (counter < maximumNumber) {
-            counter++;
+            counter = counter + 1;
             calculatePrice(counter)
             displayPrice(counter)
         }
@@ -153,7 +148,7 @@ getData('/goods/' + productId).then(({ data }) => {
 
     decreaseButton.onclick = () => {
         if (counter > 1) {
-            counter--;
+            counter = counter - 1;
             calculatePrice(counter)
             displayPrice(counter)
         }
@@ -191,4 +186,49 @@ getData('/goods/' + productId).then(({ data }) => {
             counterBlock.classList.remove('not-available-plus')
         }
     }
+
+
+
+    let addToCartBtn = document.querySelector('[data-add-to-cart]'),
+        name = localStorage.getItem('user-name'),
+        deleteKey = false
+
+    getData(`/cart`).then(({ data }) => {
+        for (let item of data) {
+            if (item.id == productId) {
+                addToCartBtn.classList.add('in-the-cart')
+                deleteKey = true
+            }
+        }
+
+        addToCartBtn.onclick = () => {
+            let cartItem = {
+                id: productId,
+                userName: name,
+                quantity: counter
+            }
+
+            if (deleteKey) {
+                deleteData(`/cart/${productId}`).then(() => {
+                    addToCartBtn.classList.remove('in-the-cart')
+                    setTimeout(() => {
+                        alert('Товар удалён из корзины')
+                    }, 300);
+                    deleteKey = false
+                }).catch(error => {
+                    console.error(error);
+                });
+            } else {
+                postData('/cart', cartItem).then(() => {
+                    addToCartBtn.classList.add('in-the-cart')
+                    setTimeout(() => {
+                        alert('Товарa добавлен в корзину')
+                    }, 300);
+                    deleteKey = true
+                }).catch(error => {
+                    console.error(error);
+                });
+            }
+        }
+    })
 })

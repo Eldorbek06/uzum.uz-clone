@@ -1,4 +1,4 @@
-import { getData } from "./reqs";
+import { getData, postData } from "./reqs";
 import { realoadProductTypeBlocks, reloadProductCards } from "./ui";
 
 function productSetByWindowWidth(products, productsBlock) {
@@ -61,6 +61,7 @@ export function productBlocksJs() {
                     btn.innerHTML = 'Показать ещё'
                     btn.dataset.isShown = "false"
                 }
+                addToCartBtnsReload()
             }
         })
 
@@ -69,5 +70,40 @@ export function productBlocksJs() {
         goToProductPageBtns.forEach(btn => btn.onclick = () => {
             localStorage.setItem('product-id', btn.dataset.productId)
         })
+
+        addToCartBtnsReload()
+    })
+}
+
+function addToCartBtnsReload() {
+    let addToCartBtns = document.querySelectorAll('[data-add-to-cart]'),
+        name = localStorage.getItem('user-name')
+
+
+    addToCartBtns.forEach(btn => {
+        let productId = btn.dataset.addToCart
+
+        getData(`/cart`).then(({ data }) => data.forEach(el => {
+            if (el.productId == productId) {
+                btn.classList.add('in-the-cart')
+            }
+        }))
+
+        btn.onclick = () => {
+            getData(`/cart?productId=${productId}`)
+                .then(({ data }) => {
+                    if (!data.length) {
+                        postData('/cart', { productId: productId, userName: name })
+                            .then(res => {
+                                if (res.statusText == "Created") {
+                                    alert('Товар добавлен в корзину')
+                                    btn.classList.add('in-the-cart')
+                                }
+                            })
+                    } else {
+                        alert('Это товар есть в корзине')
+                    }
+                })
+        }
     })
 }
