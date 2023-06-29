@@ -9,7 +9,7 @@ import { reloadProductCards } from './ui';
 let productId = localStorage.getItem('product-id'),
     counterInitialNum = 0
 
-getData('/cart/' + productId).then(({data}) => {
+getData('/cart/' + productId).then(({ data }) => {
     counterInitialNum = data.quantity
 }).catch(error => {
     counterInitialNum = false
@@ -32,11 +32,18 @@ getData('/goods/' + productId).then(({ data }) => {
     productDescr.innerHTML = data.description
     siteTitle.innerHTML = 'Купить ' + data.title
 
-    priceBlock.innerHTML = `
-        <span class="name">Цена:</span>
-        <span class="product-info__sale-price" id="sale-price-view">${salePrice} &#8381; /</span>
-        <span class="product-info__real-price" id="real-price-view">${price} &#8381;</span>
-    `
+    if (salePrice != price) {
+        priceBlock.innerHTML = `
+            <span class="name">Цена:</span>
+            <span class="product-info__sale-price" id="sale-price-view">${salePrice} &#8381; /</span>
+            <span class="product-info__real-price" id="real-price-view">${price} &#8381;</span>
+        `
+    } else {
+        priceBlock.innerHTML = `
+            <span class="name">Цена:</span>
+            <span class="product-info__sale-price" id="sale-price-view">${price} &#8381;</span>
+        `
+    }
 
     data.colors.forEach(color => {
         colorsContainer.innerHTML += `
@@ -172,10 +179,14 @@ getData('/goods/' + productId).then(({ data }) => {
         let calculatedPrice = calculatePrice(counter);
         let calculatedSalePrice = calculateSalePrice(counter);
         if (counter === 1) {
-            realPriceView.innerHTML = calculatedPrice + '&#8381;'
-            salePriceView.innerHTML = calculatedSalePrice + '&#8381 /'
+            if (realPriceView != null) {
+                realPriceView.innerHTML = calculatedPrice + '&#8381;'
+                salePriceView.innerHTML = calculatedSalePrice + '&#8381 /'
+            } else {
+                salePriceView.innerHTML = calculatedSalePrice + '&#8381'
+            }
         } else {
-            realPriceView.innerHTML = ''
+            realPriceView != null ? realPriceView.innerHTML = '' : ''
             salePriceView.innerHTML = calculatedSalePrice + '&#8381'
         }
         counterElement.innerHTML = counter
