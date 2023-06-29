@@ -1,7 +1,7 @@
 import './standard'
 import '../scss/cart.scss'
 import { getData } from './reqs'
-import { reloadProductCards } from './ui'
+import { reloadCartProducts, reloadProductCards } from './ui'
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 
@@ -47,75 +47,26 @@ getData('/goods').then(({ data }) => {
 const userName = localStorage.getItem('user-name')
 
 getData(`/cart?userName=${userName}`).then(({ data }) => {
-    let neededProducts = data,
-        counter = 1
+    let neededProducts = data
 
     getData('/goods').then(({ data }) => {
         let cartProductsData = data.filter(el => {
             for (let item of neededProducts) {
                 if (el.id == item.id) {
+                    el.count = item.quantity
                     return el
                 }
             }
         })
 
         let cartProductsContainer = document.querySelector('.cart-products__container')
-        cartProductsContainer.innerHTML = ''
-
-        for (let item of cartProductsData) {
-            let salePrice = Math.round(item.price - item.price / 100 * item.salePercentage),
-                price = item.price
-
-            cartProductsContainer.innerHTML += `
-                <div class="cart-product">
-                    <div class="cart-product__left">
-                        <div class="cart-product__left-box">
-                        <label class="cart-product__checkbox checkbox-container">
-                        <input type="checkbox">
-                        <svg viewBox="0 0 64 64" height="2em" width="2em">
-                            <path
-                                d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
-                                pathLength="575.0541381835938" class="path"></path>
-                        </svg>
-                    </label>
-                    <div class="cart-product__info">
-                        <div class="cart-product__image-box">
-                            <img class="cart-product__image"
-                                src="${item.media[0]}" alt="image">
-                        </div>
-                        <div class="cart-product__info-inner">
-                            <h3 class="cart-product__title">${item.title}</h3>
-                        </div>
-                    </div>
-                        </div>
-                        <div class="product-counter">
-                            <span class="product-counter__minus">&minus;</span>
-                            <span class="product-counter__num">1</span>
-                            <span class="product-counter__plus">&plus;</span>
-                            <span class="product-counter__price-for-one">5000 сум/ед.</span>
-                            <span class="product-counter__maximum"></span>
-                        </div>
-                    </div>
-                    <div class="cart-product__right">
-                        <div class="cart-product__delete">
-                            <img class="cart-product__delete-icon" src="/public/icons/cart/trash.svg"
-                                alt="icon">
-                            <span>Удалить</span>
-                        </div>
-                        <div class="cart-product__price-block">
-                            <span class="cart-product__sale-price" data-sale-price="${salePrice}">${!item.salePercentage ? price : salePrice} &#8381;</span>
-                            <span class="cart-product__real-price" data-real-price="${price}">${!item.salePercentage ? '' : price + ' &#8381;'}</span>
-                        </div>
-                    </div>
-                </div>
-            `
-        }
-
         let counterBlocks = document.querySelectorAll('.product-counter')
+
+        reloadCartProducts(cartProductsData, cartProductsContainer)
 
         counterBlocks.forEach(counterBlock => {
             let maximumNumber = 10,
-                counter = 1,
+                counter = +counterBlock.querySelector('.product-counter__num').dataset.counterNum,
                 realPriceView = counterBlock.parentElement.nextElementSibling.lastElementChild.lastElementChild,
                 salePriceView = counterBlock.parentElement.nextElementSibling.lastElementChild.firstElementChild,
                 counterElement = counterBlock.querySelector(".product-counter__num"),
@@ -193,37 +144,59 @@ getData(`/cart?userName=${userName}`).then(({ data }) => {
                     counterBlock.classList.remove('not-available-plus')
                 }
             }
+        })
 
-            let allSelect = document.querySelector('.cart-products__select-all input'),
-                allCheckboxes = document.querySelectorAll('.cart-product__checkbox input')
+        let allSelect = document.querySelector('.cart-products__select-all input'),
+            allCheckboxes = document.querySelectorAll('.cart-product__checkbox input')
+
+        allCheckboxes.forEach(checkbox => {
+            checkbox.onchange = (e) => {
+                let isCheckboxChecked = e.target.checked,
+                    count = 0
+
+                if (!isCheckboxChecked) {
+                    allSelect.checked = false
+                } else {
+                    allCheckboxes.forEach(checkbox => checkbox.checked ? count++ : '')
+                    count == allCheckboxes.length ? allSelect.checked = true : ''
+                }
+                allSelect.parentElement.lastElementChild.innerHTML = allSelect.checked ? 'Снять всё' : 'Выбрать всё'
+            }
+        })
+
+        allSelect.onchange = (e) => {
+            let isChecked = e.target.checked
+            allSelect.parentElement.lastElementChild.innerHTML = isChecked ? 'Снять всё' : 'Выбрать всё'
 
             allCheckboxes.forEach(checkbox => {
-                checkbox.onchange = (e) => {
-                    let isCheckboxChecked = e.target.checked,
-                        count = 0
-
-                    if (!isCheckboxChecked) {
-                        allSelect.checked = false
-                    } else {
-                        allCheckboxes.forEach(checkbox => checkbox.checked ? count++ : '')
-                        count == allCheckboxes.length ? allSelect.checked = true : ''
-                    }
+                if (isChecked) {
+                    checkbox.checked = true
+                } else {
+                    checkbox.checked = false
                 }
             })
+        }
 
-            allSelect.onchange = (e) => {
-                let isChecked = e.target.checked
-                allSelect.parentElement.lastElementChild.innerHTML = isChecked ? 'Снять всё' : 'Выбрать всё'
+        let deliveryDateView = document.querySelector('.cart-products__delivery-date-view'),
+            months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+            deliveryDate = (new Date().getDate() + 1) + ' ' + months[new Date().getMonth()]
 
-                allCheckboxes.forEach(checkbox => {
-                    if (isChecked) {
-                        checkbox.checked = true
-                    } else {
-                        checkbox.checked = false
-                    }
-                })
+        deliveryDateView.innerHTML = deliveryDate
+
+
+        let goToProductPageBtns = document.querySelectorAll('[data-product-id]')
+
+        goToProductPageBtns.forEach(btn => btn.onclick = () => {
+            localStorage.setItem('product-id', btn.dataset.productId)
+        })
+
+
+        let cartProductDeleteBtns = document.querySelectorAll('.cart-product__delete')
+
+        cartProductDeleteBtns.forEach(btn => {
+            btn.onclick = () => {
+
             }
         })
     })
-
 })

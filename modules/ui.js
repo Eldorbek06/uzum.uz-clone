@@ -474,10 +474,10 @@ export function realoadProductTypeBlocks(data, place) {
 export function reloadProductCards(data, place) {
     place.innerHTML = ''
     for (let item of data) {
-        let creditSum = Math.round((item.price / 100 * 44 + item.price) / 12),
-            salePrice = Math.round(item.price - item.price / 100 * 44) / 1000
+        let creditSum = Math.round((item.price / 100 * item.salePercentage + item.price) / 12),
+            salePrice = Math.round(item.price - item.price / 100 * item.salePercentage) / 1000
 
-        if(place.classList.contains('swiper-wrapper')){
+        if (place.classList.contains('swiper-wrapper')) {
             place.innerHTML += `
                 <div class="swiper-slide">
                     <div class="product-card">
@@ -494,7 +494,7 @@ export function reloadProductCards(data, place) {
                         </div>
                         <div class="product-card__info">
                             <div class="product-card__title">
-                                <a data-product-id="${item.id}" href="pages/product.html">${item.title}</a>
+                                <span>${item.title}</span>
                                 <div class="product-card__rating">
                                     <img src="/public/icons/product-cart/rating.svg" alt="icon">
                                     <span>${item.rating}</span>
@@ -529,7 +529,7 @@ export function reloadProductCards(data, place) {
                     </div>
                     <div class="product-card__info">
                         <div class="product-card__title">
-                            <a data-product-id="${item.id}" href="pages/product.html">${item.title}</a>
+                            <span>${item.title}</span>
                             <div class="product-card__rating">
                                 <img src="/public/icons/product-cart/rating.svg" alt="icon">
                                 <span>${item.rating}</span>
@@ -548,5 +548,58 @@ export function reloadProductCards(data, place) {
                 </div>       
             `
         }
+    }
+}
+
+export function reloadCartProducts(data, place) {
+    place.innerHTML = ''
+
+    for (let item of data) {
+        let salePrice = Math.round(item.price - item.price / 100 * item.salePercentage),
+            price = item.price
+
+            place.innerHTML += `
+            <div class="cart-product">
+                <div class="cart-product__left">
+                    <div class="cart-product__left-box">
+                    <label class="cart-product__checkbox checkbox-container">
+                    <input type="checkbox">
+                    <svg viewBox="0 0 64 64" height="2em" width="2em">
+                        <path
+                            d="M 0 16 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 16 L 32 48 L 64 16 V 8 A 8 8 90 0 0 56 0 H 8 A 8 8 90 0 0 0 8 V 56 A 8 8 90 0 0 8 64 H 56 A 8 8 90 0 0 64 56 V 16"
+                            pathLength="575.0541381835938" class="path"></path>
+                    </svg>
+                </label>
+                <div class="cart-product__info">
+                    <a href="/pages/product.html" data-product-id="${item.id}" class="cart-product__image-box">
+                        <img class="cart-product__image"
+                            src="${item.media[0]}" alt="image">
+                    </a>
+                    <div class="cart-product__info-inner">
+                        <h3 class="cart-product__title">${item.title}</h3>
+                    </div>
+                </div>
+                    </div>
+                    <div class="product-counter">
+                        <span class="product-counter__minus">&minus;</span>
+                        <span class="product-counter__num" data-counter-num="${item.count}">${item.count}</span>
+                        <span class="product-counter__plus">&plus;</span>
+                        <span class="product-counter__price-for-one">5000 сум/ед.</span>
+                        <span class="product-counter__maximum"></span>
+                    </div>
+                </div>
+                <div class="cart-product__right">
+                    <div class="cart-product__delete" data-delete-id="${item.id}">
+                        <img class="cart-product__delete-icon" src="/public/icons/cart/trash.svg"
+                            alt="icon">
+                        <span>Удалить</span>
+                    </div>
+                    <div class="cart-product__price-block">
+                        <span class="cart-product__sale-price" data-sale-price="${salePrice}">${!item.salePercentage ? price : salePrice} &#8381;</span>
+                        <span class="cart-product__real-price" data-real-price="${price}">${!item.salePercentage ? '' : price + ' &#8381;'}</span>
+                    </div>
+                </div>
+            </div>
+        `
     }
 }

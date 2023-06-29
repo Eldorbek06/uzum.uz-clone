@@ -6,7 +6,14 @@ import '../scss/product-blocks.scss'
 import { deleteData, getData, postData } from './reqs';
 import { reloadProductCards } from './ui';
 
-let productId = localStorage.getItem('product-id')
+let productId = localStorage.getItem('product-id'),
+    counterInitialNum = 0
+
+getData('/cart/' + productId).then(({data}) => {
+    counterInitialNum = data.quantity
+}).catch(error => {
+    counterInitialNum = false
+})
 
 getData('/goods/' + productId).then(({ data }) => {
     let creditSum = Math.round((data.price / 100 * data.salePercentage + data.price) / 12),
@@ -118,7 +125,7 @@ getData('/goods/' + productId).then(({ data }) => {
 
 
     let maximumNumber = 10,
-        counter = 1,
+        counter = !counterInitialNum ? 1 : counterInitialNum,
         realPriceView = document.querySelector('#real-price-view'),
         salePriceView = document.querySelector('#sale-price-view'),
         counterElement = document.querySelector(".product-counter__num"),
@@ -130,6 +137,7 @@ getData('/goods/' + productId).then(({ data }) => {
 
     maximumNumberView.innerHTML = 'В наличии всего ' + maximumNumber + ' штук'
     checkAvailability(counter)
+    counterElement.innerHTML = counter
 
     increaseButton.onclick = () => {
         if (counter < maximumNumber) {
@@ -205,6 +213,7 @@ getData('/goods/' + productId).then(({ data }) => {
             }
 
             if (deleteKey) {
+                addToCartBtn.innerHTML = "Добавить в корзину"
                 deleteData(`/cart/${productId}`).then(() => {
                     addToCartBtn.classList.remove('in-the-cart')
                     setTimeout(() => {
@@ -215,6 +224,7 @@ getData('/goods/' + productId).then(({ data }) => {
                     console.error(error);
                 });
             } else {
+                addToCartBtn.innerHTML = "Удалить из корзины"
                 postData('/cart', cartItem).then(() => {
                     addToCartBtn.classList.add('in-the-cart')
                     setTimeout(() => {
