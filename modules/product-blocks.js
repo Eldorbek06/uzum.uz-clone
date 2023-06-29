@@ -75,7 +75,7 @@ export function productBlocksJs() {
     })
 }
 
-function addToCartBtnsReload() {
+export function addToCartBtnsReload() {
     let addToCartBtns = document.querySelectorAll('[data-add-to-cart]'),
         name = localStorage.getItem('user-name')
 

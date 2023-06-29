@@ -1,9 +1,11 @@
 import './standard'
 import '../scss/cart.scss'
-import { deleteData, getData } from './reqs'
+import { deleteData, getData, postData } from './reqs'
 import { reloadCartProducts, reloadProductCards } from './ui'
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
+
+const userName = localStorage.getItem('user-name')
 
 getData('/goods').then(({ data }) => {
     let popularProductsSliderWrapper = document.querySelector('.popular-products-slider__wrapper')
@@ -41,180 +43,224 @@ getData('/goods').then(({ data }) => {
             }
         }
     })
-})
+
+    let addToCartBtns = document.querySelectorAll('[data-add-to-cart]'),
+        name = localStorage.getItem('user-name')
 
 
-const userName = localStorage.getItem('user-name')
+    addToCartBtns.forEach(btn => {
+        let productId = btn.dataset.addToCart
 
-getData(`/cart?userName=${userName}`).then(({ data }) => {
-    let neededProducts = data
-
-    getData('/goods').then(({ data }) => {
-        let cartProductsData = data.filter(el => {
-            for (let item of neededProducts) {
-                if (el.id == item.id) {
-                    el.count = item.quantity
-                    return el
-                }
+        getData(`/cart?userName=${name}`).then(({ data }) => data.forEach(el => {
+            if (el.id == productId) {
+                btn.classList.add('in-the-cart')
             }
-        })
+        }))
 
-        let cartProductsContainer = document.querySelector('.cart-products__container')
-        let counterBlocks = document.querySelectorAll('.product-counter')
-
-        reloadCartProducts(cartProductsData, cartProductsContainer)
-
-        counterBlocks.forEach(counterBlock => {
-            let maximumNumber = 10,
-                counter = +counterBlock.querySelector('.product-counter__num').dataset.counterNum,
-                realPriceView = counterBlock.parentElement.nextElementSibling.lastElementChild.lastElementChild,
-                salePriceView = counterBlock.parentElement.nextElementSibling.lastElementChild.firstElementChild,
-                counterElement = counterBlock.querySelector(".product-counter__num"),
-                increaseButton = counterBlock.querySelector(".product-counter__plus"),
-                decreaseButton = counterBlock.querySelector(".product-counter__minus"),
-                maximumNumberView = counterBlock.querySelector('.product-counter__maximum'),
-                price = realPriceView.dataset.realPrice,
-                salePrice = salePriceView.dataset.salePrice,
-                priceForOneView = counterBlock.querySelector('.product-counter__price-for-one')
-
-            if (price == salePrice) {
-                priceForOneView.innerHTML = price + ' &#8381;/ед.'
-            } else {
-                priceForOneView.innerHTML = salePrice + ' &#8381;/ед.'
-            }
-            maximumNumberView.innerHTML = 'В наличии всего ' + maximumNumber + ' штук'
-            checkAvailability(counter)
-
-            increaseButton.onclick = () => {
-                if (counter < maximumNumber) {
-                    counter = counter + 1;
-                    calculatePrice(counter)
-                    displayPrice(counter)
-                }
-                if (counter == maximumNumber) {
-                    setTimeout(() => {
-                        alert('В наличии только ' + maximumNumber + ' штук')
-                    }, 100);
-                }
-            };
-
-            decreaseButton.onclick = () => {
-                if (counter > 1) {
-                    counter = counter - 1;
-                    calculatePrice(counter)
-                    displayPrice(counter)
-                }
-            };
-
-            function calculatePrice(counter) {
-                return price * counter;
-            }
-
-            function calculateSalePrice(counter) {
-                return salePrice * counter;
-            }
-
-            function displayPrice(counter) {
-                let calculatedPrice = calculatePrice(counter);
-                let calculatedSalePrice = calculateSalePrice(counter);
-                if (counter === 1) {
-                    if (price != salePrice) {
-                        realPriceView.innerHTML = calculatedPrice + '&#8381;'
-                    }
-                    salePriceView.innerHTML = calculatedSalePrice + '&#8381'
-                    priceForOneView.classList.remove('price-for-one-active')
-                } else {
-                    if (price != salePrice) {
-                        realPriceView.innerHTML = calculatedPrice + '&#8381;'
-                    }
-                    salePriceView.innerHTML = calculatedSalePrice + '&#8381'
-                    priceForOneView.classList.add('price-for-one-active')
-                }
-                counterElement.innerHTML = counter
-                checkAvailability(counter)
-                checkRealod()
-            }
-
-            function checkAvailability(number) {
-                if (number == 1) {
-                    counterBlock.classList.add('not-available-minus')
-                } else if (number == 10) {
-                    counterBlock.classList.add('not-available-plus')
-                } else {
-                    counterBlock.classList.remove('not-available-minus')
-                    counterBlock.classList.remove('not-available-plus')
-                }
-            }
-        })
-
-        let allSelect = document.querySelector('.cart-products__select-all input'),
-            allCheckboxes = document.querySelectorAll('.cart-product__checkbox input')
-
-        allCheckboxes.forEach(checkbox => {
-            allSelect.checked ? checkbox.checked = true : ''
-
-            checkbox.onchange = (e) => {
-                let isCheckboxChecked = e.target.checked,
-                    count = 0
-
-                if (!isCheckboxChecked) {
-                    allSelect.checked = false
-                } else {
-                    allCheckboxes.forEach(checkbox => checkbox.checked ? count++ : '')
-                    count == allCheckboxes.length ? allSelect.checked = true : ''
-                }
-                allSelect.parentElement.lastElementChild.innerHTML = allSelect.checked ? 'Снять всё' : 'Выбрать всё'
-                checkRealod()
-            }
-        })
-
-        allSelect.onchange = (e) => {
-            let isChecked = e.target.checked
-            allSelect.parentElement.lastElementChild.innerHTML = isChecked ? 'Снять всё' : 'Выбрать всё'
-
-            allCheckboxes.forEach(checkbox => {
-                if (isChecked) {
-                    checkbox.checked = true
-                } else {
-                    checkbox.checked = false
-                }
-            })
-            checkRealod()
-        }
-
-        let deliveryDateElems = document.querySelectorAll('[data-delivery-date]'),
-            months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            deliveryDate = 'Доставка ' + (new Date().getDate() + 1) + ' ' + months[new Date().getMonth()]
-
-        deliveryDateElems.forEach(el => {
-            el.innerHTML = deliveryDate
-        })
-
-
-        let goToProductPageBtns = document.querySelectorAll('[data-product-id]')
-
-        goToProductPageBtns.forEach(btn => btn.onclick = () => {
-            localStorage.setItem('product-id', btn.dataset.productId)
-        })
-
-
-        let cartProductDeleteBtns = document.querySelectorAll('.cart-product__delete')
-
-        cartProductDeleteBtns.forEach(btn => {
-            btn.onclick = () => {
-                let key = btn.dataset.deleteId
-
-                deleteData('/cart/' + key).then(() => {
-                    let data = cartProductsData.filter(el => el.id != key)
-                    reloadCartProducts(data, cartProductsContainer)
-                    checkRealod()
+        btn.onclick = () => {
+            getData(`/cart/${productId}`)
+                .then(() => {
+                    alert('Это товар есть в корзине')
+                }).catch(() => {
+                    postData('/cart', { id: productId, userName: name, quantity: 1 })
+                        .then(res => {
+                            if (res.statusText == "Created") {
+                                setTimeout(() => {
+                                    alert('Товар добавлен в корзину')
+                                }, 300);
+                                btn.classList.add('in-the-cart')
+                                relaodCartJs()
+                            }
+                        })
                 })
-            }
-        })
-
-        checkRealod()
+        }
     })
 })
+
+function checkForAnyProduct() {
+    getData(`/cart?userName=${userName}`).then(({ data }) => {
+        if (data.length == 0) {
+            return document.querySelector('.main').classList.add('no-product-active')
+        }
+    })
+}
+
+relaodCartJs()
+
+function relaodCartJs() {
+    getData(`/cart?userName=${userName}`).then(({ data }) => {
+        let neededProducts = data
+
+        checkForAnyProduct()
+
+        getData('/goods').then(({ data }) => {
+            let cartProductsData = data.filter(el => {
+                for (let item of neededProducts) {
+                    if (el.id == item.id) {
+                        el.count = item.quantity
+                        return el
+                    }
+                }
+            })
+
+            let cartProductsContainer = document.querySelector('.cart-products__container')
+
+            reloadCartProducts(cartProductsData, cartProductsContainer)
+
+            let counterBlocks = document.querySelectorAll('.product-counter')
+
+            counterBlocks.forEach(counterBlock => {
+                let maximumNumber = 10,
+                    counter = +counterBlock.querySelector('.product-counter__num').dataset.counterNum,
+                    realPriceView = counterBlock.parentElement.nextElementSibling.lastElementChild.lastElementChild,
+                    salePriceView = counterBlock.parentElement.nextElementSibling.lastElementChild.firstElementChild,
+                    counterElement = counterBlock.querySelector(".product-counter__num"),
+                    increaseButton = counterBlock.querySelector(".product-counter__plus"),
+                    decreaseButton = counterBlock.querySelector(".product-counter__minus"),
+                    maximumNumberView = counterBlock.querySelector('.product-counter__maximum'),
+                    price = realPriceView.dataset.realPrice,
+                    salePrice = salePriceView.dataset.salePrice,
+                    priceForOneView = counterBlock.querySelector('.product-counter__price-for-one')
+
+                if (price == salePrice) {
+                    priceForOneView.innerHTML = price + ' &#8381;/ед.'
+                } else {
+                    priceForOneView.innerHTML = salePrice + ' &#8381;/ед.'
+                }
+                maximumNumberView.innerHTML = 'В наличии всего ' + maximumNumber + ' штук'
+                checkAvailability(counter)
+
+                increaseButton.onclick = () => {
+                    if (counter < maximumNumber) {
+                        counter = counter + 1;
+                        calculatePrice(counter)
+                        displayPrice(counter)
+                    }
+                    if (counter == maximumNumber) {
+                        setTimeout(() => {
+                            alert('В наличии только ' + maximumNumber + ' штук')
+                        }, 100);
+                    }
+                };
+
+                decreaseButton.onclick = () => {
+                    if (counter > 1) {
+                        counter = counter - 1;
+                        calculatePrice(counter)
+                        displayPrice(counter)
+                    }
+                };
+
+                function calculatePrice(counter) {
+                    return price * counter;
+                }
+
+                function calculateSalePrice(counter) {
+                    return salePrice * counter;
+                }
+
+                function displayPrice(counter) {
+                    let calculatedPrice = calculatePrice(counter);
+                    let calculatedSalePrice = calculateSalePrice(counter);
+                    if (counter === 1) {
+                        if (price != salePrice) {
+                            realPriceView.innerHTML = calculatedPrice + ' &#8381;'
+                        }
+                        salePriceView.innerHTML = calculatedSalePrice + ' &#8381'
+                        priceForOneView.classList.remove('price-for-one-active')
+                    } else {
+                        if (price != salePrice) {
+                            realPriceView.innerHTML = calculatedPrice + ' &#8381;'
+                        }
+                        salePriceView.innerHTML = calculatedSalePrice + ' &#8381'
+                        priceForOneView.classList.add('price-for-one-active')
+                    }
+                    counterElement.innerHTML = counter
+                    checkAvailability(counter)
+                    checkRealod()
+                }
+
+                function checkAvailability(number) {
+                    if (number == 1) {
+                        counterBlock.classList.add('not-available-minus')
+                    } else if (number == 10) {
+                        counterBlock.classList.add('not-available-plus')
+                    } else {
+                        counterBlock.classList.remove('not-available-minus')
+                        counterBlock.classList.remove('not-available-plus')
+                    }
+                }
+            })
+
+            let allSelect = document.querySelector('.cart-products__select-all input'),
+                allCheckboxes = document.querySelectorAll('.cart-product__checkbox input')
+
+            allCheckboxes.forEach(checkbox => {
+                allSelect.checked ? checkbox.checked = true : ''
+
+                checkbox.onchange = (e) => {
+                    let isCheckboxChecked = e.target.checked,
+                        count = 0
+
+                    if (!isCheckboxChecked) {
+                        allSelect.checked = false
+                    } else {
+                        allCheckboxes.forEach(checkbox => checkbox.checked ? count++ : '')
+                        count == allCheckboxes.length ? allSelect.checked = true : ''
+                    }
+                    allSelect.parentElement.lastElementChild.innerHTML = allSelect.checked ? 'Снять всё' : 'Выбрать всё'
+                    checkRealod()
+                }
+            })
+
+            allSelect.onchange = (e) => {
+                let isChecked = e.target.checked
+                allSelect.parentElement.lastElementChild.innerHTML = isChecked ? 'Снять всё' : 'Выбрать всё'
+
+                allCheckboxes.forEach(checkbox => {
+                    if (isChecked) {
+                        checkbox.checked = true
+                    } else {
+                        checkbox.checked = false
+                    }
+                })
+                checkRealod()
+            }
+
+            let deliveryDateElems = document.querySelectorAll('[data-delivery-date]'),
+                months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
+                deliveryDate = 'Доставка ' + (new Date().getDate() + 1) + ' ' + months[new Date().getMonth()]
+
+            deliveryDateElems.forEach(el => {
+                el.innerHTML = deliveryDate
+            })
+
+
+            let goToProductPageBtns = document.querySelectorAll('[data-product-id]')
+
+            goToProductPageBtns.forEach(btn => btn.onclick = () => {
+                localStorage.setItem('product-id', btn.dataset.productId)
+            })
+
+
+            let cartProductDeleteBtns = document.querySelectorAll('.cart-product__delete')
+
+            cartProductDeleteBtns.forEach(btn => {
+                btn.onclick = () => {
+                    let key = btn.dataset.deleteId
+
+                    deleteData('/cart/' + key).then(() => {
+                        btn.parentElement.parentElement.remove()
+                        checkRealod()
+                        checkForAnyProduct()
+                    })
+                }
+            })
+
+            checkRealod()
+        })
+    })
+}
 
 function checkRealod() {
     let totalChosenProductsView = document.querySelector('.check__products-top'),
@@ -225,6 +271,7 @@ function checkRealod() {
         totalPrice = 0,
         savedMoney = 0,
         checkedProductCount = 0
+
 
     allCheckboxes.forEach(checkbox => {
         let isChecked = checkbox.checked,
@@ -245,5 +292,6 @@ function checkRealod() {
         <span class="check__text">${totalPrice} &#8381;</span>
     `
     totalPriceView.innerHTML = totalPrice + ' &#8381;'
-    totalSavedView.innerHTML = savedMoney + ' &#8381;'
+    totalSavedView.innerHTML = `Вы экономили: ${savedMoney} &#8381;`
 }
+
