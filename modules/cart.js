@@ -1,6 +1,6 @@
 import './standard'
 import '../scss/cart.scss'
-import { getData } from './reqs'
+import { deleteData, getData } from './reqs'
 import { reloadCartProducts, reloadProductCards } from './ui'
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
@@ -132,6 +132,7 @@ getData(`/cart?userName=${userName}`).then(({ data }) => {
                 }
                 counterElement.innerHTML = counter
                 checkAvailability(counter)
+                checkRealod()
             }
 
             function checkAvailability(number) {
@@ -150,6 +151,8 @@ getData(`/cart?userName=${userName}`).then(({ data }) => {
             allCheckboxes = document.querySelectorAll('.cart-product__checkbox input')
 
         allCheckboxes.forEach(checkbox => {
+            allSelect.checked ? checkbox.checked = true : ''
+
             checkbox.onchange = (e) => {
                 let isCheckboxChecked = e.target.checked,
                     count = 0
@@ -161,6 +164,7 @@ getData(`/cart?userName=${userName}`).then(({ data }) => {
                     count == allCheckboxes.length ? allSelect.checked = true : ''
                 }
                 allSelect.parentElement.lastElementChild.innerHTML = allSelect.checked ? 'Снять всё' : 'Выбрать всё'
+                checkRealod()
             }
         })
 
@@ -175,13 +179,16 @@ getData(`/cart?userName=${userName}`).then(({ data }) => {
                     checkbox.checked = false
                 }
             })
+            checkRealod()
         }
 
-        let deliveryDateView = document.querySelector('.cart-products__delivery-date-view'),
+        let deliveryDateElems = document.querySelectorAll('[data-delivery-date]'),
             months = ['Январь', 'Февраль', 'Март', 'Апрель', 'Май', 'Июнь', 'Июль', 'Август', 'Сентябрь', 'Октябрь', 'Ноябрь', 'Декабрь'],
-            deliveryDate = (new Date().getDate() + 1) + ' ' + months[new Date().getMonth()]
+            deliveryDate = 'Доставка ' + (new Date().getDate() + 1) + ' ' + months[new Date().getMonth()]
 
-        deliveryDateView.innerHTML = deliveryDate
+        deliveryDateElems.forEach(el => {
+            el.innerHTML = deliveryDate
+        })
 
 
         let goToProductPageBtns = document.querySelectorAll('[data-product-id]')
@@ -195,8 +202,48 @@ getData(`/cart?userName=${userName}`).then(({ data }) => {
 
         cartProductDeleteBtns.forEach(btn => {
             btn.onclick = () => {
+                let key = btn.dataset.deleteId
 
+                deleteData('/cart/' + key).then(() => {
+                    let data = cartProductsData.filter(el => el.id != key)
+                    reloadCartProducts(data, cartProductsContainer)
+                    checkRealod()
+                })
             }
         })
+
+        checkRealod()
     })
 })
+
+function checkRealod() {
+    let totalChosenProductsView = document.querySelector('.check__products-top'),
+        totalPriceView = document.querySelector('.check__total-view'),
+        totalSavedView = document.querySelector('.check__total-saved'),
+        allCheckboxes = document.querySelectorAll('.cart-product__checkbox input'),
+        checkElem = document.querySelector('.check'),
+        totalPrice = 0,
+        savedMoney = 0,
+        checkedProductCount = 0
+
+    allCheckboxes.forEach(checkbox => {
+        let isChecked = checkbox.checked,
+            price = +checkbox.parentElement.parentElement.parentElement.parentElement.querySelector('.cart-product__real-price').innerHTML.split(' ').at(),
+            salePrice = +checkbox.parentElement.parentElement.parentElement.parentElement.querySelector('.cart-product__sale-price').innerHTML.split(' ').at()
+
+        if (isChecked) {
+            checkedProductCount++
+            totalPrice += salePrice
+            savedMoney += price == 0 ? 0 : price - salePrice
+        }
+    })
+
+    checkedProductCount == 0 ? checkElem.classList.remove('check-active') : checkElem.classList.add('check-active')
+
+    totalChosenProductsView.innerHTML = `
+        <span class="check__text">Товары (${checkedProductCount}):</span>
+        <span class="check__text">${totalPrice} &#8381;</span>
+    `
+    totalPriceView.innerHTML = totalPrice + ' &#8381;'
+    totalSavedView.innerHTML = savedMoney + ' &#8381;'
+}

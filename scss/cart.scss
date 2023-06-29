@@ -437,6 +437,9 @@
         font-size: 0.9em;
         color: #00e649;
         font-weight: 500;
+        visibility: hidden;
+        opacity: 0;
+        transition: .2s;
     }
 
     &__total-button {
@@ -448,6 +451,8 @@
         margin-top: 5px;
         color: #AAADB6;
         background-color: #F5F6F7;
+        transition: .2s;
+        border: 2px solid transparent;
     }
 }
 
@@ -455,6 +460,17 @@
     .check__total-button {
         color: white;
         background-color: $main-purple;
+
+        &:hover {
+            border-color: $main-purple;
+            background-color: white;
+            color: $main-purple;
+        }
+    }
+
+    .check__total-saved {
+        opacity: 1;
+        visibility: visible;
     }
 }
 

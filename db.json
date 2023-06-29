@@ -952,11 +952,6 @@
   ],
   "cart": [
     {
-      "id": "2",
-      "userName": "Eldor",
-      "quantity": 1
-    },
-    {
       "id": "3",
       "userName": "Eldor",
       "quantity": 1
@@ -967,17 +962,7 @@
       "quantity": 1
     },
     {
-      "id": "1",
-      "userName": "Eldor",
-      "quantity": 1
-    },
-    {
       "id": "21",
-      "userName": "Eldor",
-      "quantity": 1
-    },
-    {
-      "id": "0.011139933448344408",
       "userName": "Eldor",
       "quantity": 1
     },
