@@ -59,12 +59,7 @@ export function headerCreate(place) {
                     <div class="search-list__area"></div>
                     <div class="search-list__inner">
                         <h2 class="search-list__title">Поиск</h2>
-                        <div class="search-list__container">
-                            <div class="search-list__item">
-                                <img class="search-list__icon" src="/public/icons/header/search.svg" alt="icon">
-                                <span>Lorem, ipsum dolor.</span>
-                            </div>
-                        </div>
+                        <div class="search-list__container"></div>
                     </div>
 				</div>
 			</div>
@@ -616,4 +611,24 @@ export function reloadCartProducts(data, place) {
             </div>
         `
     }
+}
+
+export function searchListReload(data, place) {
+    place.innerHTML = ''
+
+    for (let item of data) {
+        place.innerHTML += `
+        <a href="/pages/product.html" class="search-list__item" data-product-id="${item.id}">
+            <img class="search-list__icon" src="/public/icons/header/search.svg" alt="icon">
+            <span>${item.title}</span>
+        </a>
+        `
+    }
+
+    let goToProductPageBtns = document.querySelectorAll('[data-product-id]')
+
+    goToProductPageBtns.forEach(btn => btn.onclick = () => {
+        localStorage.setItem('product-id', btn.dataset.productId)
+        document.querySelector('.header__search-inp').innerHTML = ''
+    })
 }

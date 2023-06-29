@@ -1,4 +1,5 @@
 import { getData } from "./reqs"
+import { searchListReload } from "./ui"
 
 export function headerFooterJs() {
     let langs = document.querySelectorAll('[data-lang]'),
@@ -114,6 +115,20 @@ export function headerFooterJs() {
                     }
                 }
             })
+
+
+            let searchInp = document.querySelector('.header__search-inp'),
+                searchList = document.querySelector('.search-list'),
+                searchBtns = document.querySelectorAll('.header__search-btn'),
+                searchListCont = document.querySelector('.search-list__container')
+
+            searchInp.oninput = () => {
+                let value = searchInp.value.toLowerCase(),
+                    listData = data.filter(el => el.title.toLowerCase().includes(value))
+
+                searchListReload(listData, searchListCont)
+                value != '' ? searchList.classList.add('search-list_active') : searchList.classList.remove('search-list_active')
+            }
         })
 
     catalog_list__area.onclick = () => {

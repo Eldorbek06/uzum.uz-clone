@@ -726,9 +726,21 @@
         transition: .2s;
         cursor: pointer;
         padding: 0 10px;
+        color: black;
+
+        &:not(:last-child){
+            border-bottom: 1px solid #c4c4c4;
+        }
 
         &:hover{
             background-color: rgba($color: gray, $alpha: .2);
+        }
+
+        span{
+            width: 100%;
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
         }
     }
 
