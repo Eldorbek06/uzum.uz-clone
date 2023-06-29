@@ -415,7 +415,7 @@ export function sliderReload(data, place) {
             let price = data[i].price / 1000 + ' &#8381;'
 
             place.innerHTML += `
-                <div class="swiper-slide product-slide">
+                <a href="/pages/product.html" class="swiper-slide product-slide" data-product-id="${data[i].id}">
                     <div class="product-slide__info">
                         <h2 class="product-slide__title">${data[i].title}</h2>
                         <div class="product-slide__price-block">
@@ -427,14 +427,14 @@ export function sliderReload(data, place) {
                     <div class="product-slide__image-block">
                         <img class="product-slide__image" src="${data[i].media.length ? data[i].media[0] : ''}" alt="image">
                     </div>
-                </div>
+                </a>
             `
         } else {
             let salePrice = Math.round(fromLastEl.price - (fromLastEl.price / 100 * fromLastEl.salePercentage)) / 1000 + ' &#8381;'
             let price = fromLastEl.price / 1000 + ' &#8381;'
 
             place.innerHTML += `
-                <div class="swiper-slide product-slide">
+                <a href="/pages/product.html" class="swiper-slide product-slide" data-product-id="${fromLastEl.id}">
                     <div class="product-slide__info">
                         <h2 class="product-slide__title">${fromLastEl.title}</h2>
                         <div class="product-slide__price-block">
@@ -447,7 +447,7 @@ export function sliderReload(data, place) {
                     <div class="product-slide__image-block">
                         <img class="product-slide__image" src="${fromLastEl.media.length ? fromLastEl.media[0] : ''}" alt="image">
                     </div>
-                </div>
+                </a>
             `
         }
     }
