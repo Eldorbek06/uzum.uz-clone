@@ -54,6 +54,20 @@ export function headerCreate(place) {
     </div>
 </div>
 <div class="header__center">
+            <div class="search-list">
+				<div class="search-list__body">
+                    <div class="search-list__area"></div>
+                    <div class="search-list__inner">
+                        <h2 class="search-list__title">Поиск</h2>
+                        <div class="search-list__container">
+                            <div class="search-list__item">
+                                <img class="search-list__icon" src="/public/icons/header/search.svg" alt="icon">
+                                <span>Lorem, ipsum dolor.</span>
+                            </div>
+                        </div>
+                    </div>
+				</div>
+			</div>
     <div class="catalog-list__area"></div>
     <div class="container">
         <div class="header__center-inner">
@@ -90,11 +104,11 @@ export function headerCreate(place) {
                     <span class="header__catalog-txt">Каталог</span>
                 </div>
                 <div class="header__search-inner">
-                    <button class="header__search-btn">
+                    <button class="header__search-btn header__search-btn_left">
                         <img class="header__search-icon" src="/icons/header/search.svg" alt="icon">
                     </button>
                     <input class="header__search-inp" type="text" placeholder="Искать товары и категории">
-                    <button class="header__search-btn">
+                    <button class="header__search-btn header__search-btn_right">
                         <img class="header__search-icon" src="/icons/header/search.svg" alt="icon">
                     </button>
                 </div>
@@ -558,7 +572,7 @@ export function reloadCartProducts(data, place) {
         let salePrice = Math.round(item.price - item.price / 100 * item.salePercentage),
             price = item.price
 
-            place.innerHTML += `
+        place.innerHTML += `
             <div class="cart-product">
                 <div class="cart-product__left">
                     <div class="cart-product__left-box">
