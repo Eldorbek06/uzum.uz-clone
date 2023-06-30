@@ -953,35 +953,7 @@
   "cart": [],
   "favorites": [
     {
-      "id": "1",
-      "userName": "Eldor"
-    },
-    {
-      "id": "2",
-      "userName": "Eldor"
-    },
-    {
-      "id": "21",
-      "userName": "Eldor"
-    },
-    {
-      "id": "22",
-      "userName": "Eldor"
-    },
-    {
-      "id": "0.011139933448344408",
-      "userName": "Eldor"
-    },
-    {
-      "id": "0.14070230267720274",
-      "userName": "Eldor"
-    },
-    {
       "id": "31",
-      "userName": "Eldor"
-    },
-    {
-      "id": "32",
       "userName": "Eldor"
     }
   ]

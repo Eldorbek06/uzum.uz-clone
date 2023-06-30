@@ -1,3 +1,4 @@
+import { favoritesJs } from "./favorites";
 import { deleteData, getData, postData } from "./reqs";
 import { realoadProductTypeBlocks, reloadProductCards } from "./ui";
 
@@ -145,6 +146,7 @@ export function reloadFavBtns() {
                                 document.querySelector('.main').classList.add('no-product_active')
                             }
                         })
+                        favoritesJs()
                     }
 
                 }).catch(() => alert('Что то пошло не так'))
