@@ -65,9 +65,6 @@ getData('/goods').then(({ data }) => {
                     postData('/cart', { id: productId, userName: name, quantity: 1 })
                         .then(res => {
                             if (res.statusText == "Created") {
-                                setTimeout(() => {
-                                    alert('Товар добавлен в корзину')
-                                }, 300);
                                 btn.classList.add('in-the-cart')
                                 relaodCartJs()
                             }
@@ -80,7 +77,7 @@ getData('/goods').then(({ data }) => {
 function checkForAnyProduct() {
     getData(`/cart?userName=${userName}`).then(({ data }) => {
         if (data.length == 0) {
-            return document.querySelector('.main').classList.add('no-product-active')
+            document.querySelector('.main').classList.add('no-product_active')
         }
     })
 }
@@ -294,4 +291,3 @@ function checkRealod() {
     totalPriceView.innerHTML = totalPrice + ' &#8381;'
     totalSavedView.innerHTML = `Вы экономили: ${savedMoney} &#8381;`
 }
-

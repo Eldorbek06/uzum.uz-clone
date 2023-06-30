@@ -390,3 +390,9 @@ hr {
     background-color: #F5F6F7;
     filter: invert(0%);
 }
+
+.favorite-btn_active{
+    border-color: gray;
+    color: gray;
+    background-color: rgba($color: gray, $alpha: .5);
+}

@@ -113,10 +113,10 @@ export function headerCreate(place) {
                     <img class="header__center-icon" src="/icons/header/user.svg" alt="icon">
                     <span class="header__ceter-item-txt" data-reg>${localStorage.getItem('user-name') == null ? 'Войти' : localStorage.getItem('user-name')}</span>
                 </div>
-                <div class="header__center-item">
+                <a href="/pages/favorites.html" class="header__center-item">
                     <img class="header__center-icon" src="/icons/header/fav.svg" alt="icon">
-                    <span class="header__ceter-item-txt">Избранное</span>
-                </div>
+                    <span class="header__ceter-item-txt" style="color: black;">Избранное</span>
+                </a>
                 <a href="/pages/cart.html" style="color: black;" class="header__center-item">
                     <img class="header__center-icon" src="/icons/header/shop-bag.svg" alt="icon">
                     <span class="header__ceter-item-txt">Корзина</span>
@@ -483,8 +483,8 @@ export function realoadProductTypeBlocks(data, place) {
 export function reloadProductCards(data, place) {
     place.innerHTML = ''
     for (let item of data) {
-        let creditSum = Math.round((item.price / 100 * item.salePercentage + item.price) / 12),
-            salePrice = Math.round(item.price - item.price / 100 * item.salePercentage) / 1000
+        let salePrice = Math.round(item.price - item.price / 100 * item.salePercentage) / 1000,
+            creditSum = salePrice != item.price ? Math.round((salePrice / 100 * 44 + item.price) / 12) : Math.round((item.price / 100 * 44 + item.price) / 12)
 
         if (place.classList.contains('swiper-wrapper')) {
             place.innerHTML += `
@@ -494,7 +494,7 @@ export function reloadProductCards(data, place) {
                             <a data-product-id="${item.id}" href="/pages/product.html">
                                 <img class="product-card__image" src="${item.media[0]}" alt="image">
                             </a>
-                            <div class="product-card__fav-icons">
+                            <div class="product-card__fav-icons" data-fav-btn="${item.id}">
                                 <img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
                                     alt="icon">
                                 <img class="product-card__fav_active"
@@ -529,7 +529,7 @@ export function reloadProductCards(data, place) {
                         <a data-product-id="${item.id}" href="/pages/product.html">
                             <img class="product-card__image" src="${item.media[0]}" alt="image">
                         </a>
-                        <div class="product-card__fav-icons">
+                        <div class="product-card__fav-icons" data-fav-btn="${item.id}">
                             <img class="product-card__fav" src="/public/icons/product-cart/fav.svg"
                                 alt="icon">
                             <img class="product-card__fav_active"

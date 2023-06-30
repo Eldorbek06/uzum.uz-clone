@@ -1,4 +1,4 @@
-import { getData, postData } from "./reqs";
+import { deleteData, getData, postData } from "./reqs";
 import { realoadProductTypeBlocks, reloadProductCards } from "./ui";
 
 function productSetByWindowWidth(products, productsBlock) {
@@ -62,6 +62,7 @@ export function productBlocksJs() {
                     btn.dataset.isShown = "false"
                 }
                 addToCartBtnsReload()
+                reloadFavBtns()
             }
         })
 
@@ -72,6 +73,7 @@ export function productBlocksJs() {
         })
 
         addToCartBtnsReload()
+        reloadFavBtns()
     })
 }
 
@@ -85,7 +87,7 @@ export function addToCartBtnsReload() {
 
         getData(`/cart?userName=${name}`).then(({ data }) => data.forEach(el => {
             if (el.id == productId) {
-                btn.classList.add('in-the-cart')
+                btn.classList.add('in-the-cart-icon')
             }
         }))
 
@@ -97,11 +99,69 @@ export function addToCartBtnsReload() {
                     postData('/cart', { id: productId, userName: name, quantity: 1 })
                         .then(res => {
                             if (res.statusText == "Created") {
-                                alert('Товар добавлен в корзину')
-                                btn.classList.add('in-the-cart')
+                                btn.classList.add('in-the-cart-icon')
                             }
                         })
                 })
+        }
+    })
+}
+
+export function reloadFavBtns() {
+    let favBtns = document.querySelectorAll('[data-fav-btn]'),
+        userName = localStorage.getItem('user-name')
+
+    getData(`/favorites?userName=${userName}`).then(({ data }) => {
+        favBtns.forEach(btn => {
+            let productId = btn.dataset.favBtn
+
+            for (let item of data) {
+                if (productId == item.id) {
+                    btn.classList.add('favorite-btn_active')
+                    if (btn.classList.contains('product-info__button_fav')) {
+                        btn.innerHTML = 'Удалить из избранного'
+                    }
+                }
+            }
+        })
+    }).catch(error => console.log(error))
+
+    favBtns.forEach(btn => {
+        btn.onclick = () => {
+            let productId = btn.dataset.favBtn
+
+            getData(`/favorites/${productId}`).then(() => {
+
+                deleteData(`/favorites/${productId}`).then(() => {
+
+                    btn.classList.remove('favorite-btn_active')
+                    if (btn.classList.contains('product-info__button_fav')) {
+                        btn.innerHTML = 'Добавить в избранное'
+                    }
+                    if (location.pathname == '/pages/favorites.html') {
+                        btn.parentElement.parentElement.remove()
+                        getData('/favorites').then(({ data }) => {
+                            if (data.length == 0) {
+                                document.querySelector('.main').classList.add('no-product_active')
+                            }
+                        })
+                    }
+
+                }).catch(() => alert('Что то пошло не так'))
+
+            }).catch(() => {
+                let obj = { id: productId, userName }
+
+                postData('/favorites', obj).then(() => {
+
+                    btn.classList.add('favorite-btn_active')
+                    if (btn.classList.contains('product-info__button_fav')) {
+                        btn.innerHTML = 'Удалить из избранного'
+                    }
+
+                }).catch(() => alert('Что то пошло не так'))
+
+            })
         }
     })
 }

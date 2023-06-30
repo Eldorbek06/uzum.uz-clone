@@ -569,7 +569,7 @@
     }
 }
 
-.no-product-active{
+.no-product_active{
     .cart{
         display: none;
     }
@@ -577,6 +577,10 @@
     .no-product{
         display: flex;
     }
+}
+
+.in-the-cart{
+    background-color: rgba($color: gray, $alpha: .2);
 }
 
 .no-product {

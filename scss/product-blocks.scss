@@ -72,8 +72,8 @@
     }
 }
 
-.in-the-cart{
-    filter: invert(50%); 
+.in-the-cart-icon {
+    filter: invert(50%);
 }
 
 .product-card {
@@ -105,7 +105,7 @@
     }
 
     &__image {
-        width: 100% ;
+        width: 100%;
         object-fit: contain;
         transition: .2s ease-in-out;
     }
@@ -121,7 +121,7 @@
         width: 20px;
         transition: .2s;
 
-        &:hover{
+        &:hover {
             filter: invert(100%);
         }
 
@@ -209,8 +209,18 @@
         transition: .2s;
         border-radius: 50%;
 
-        &:hover{
+        &:hover {
             background-color: rgba($color: gray, $alpha: .2);
         }
+    }
+}
+
+.favorite-btn_active {
+    .product-card__fav_active {
+        display: block !important;
+    }
+
+    .product-card__fav {
+        display: none !important;
     }
 }

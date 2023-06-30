@@ -5,13 +5,14 @@ import '../scss/product.scss'
 import '../scss/product-blocks.scss'
 import { deleteData, getData, postData } from './reqs';
 import { reloadProductCards } from './ui';
+import { addToCartBtnsReload, reloadFavBtns } from './product-blocks';
 
 let productId = localStorage.getItem('product-id'),
     counterInitialNum = 0
 
 getData('/cart/' + productId).then(({ data }) => {
     counterInitialNum = data.quantity
-}).catch(error => {
+}).catch(() => {
     counterInitialNum = false
 })
 
@@ -25,12 +26,14 @@ getData('/goods/' + productId).then(({ data }) => {
         title = document.querySelector('.product-info__title'),
         productDescr = document.querySelector('.product-description__text'),
         creditSumView = document.querySelector('.product-info__credit-item_yellow'),
-        siteTitle = document.querySelector('title')
+        siteTitle = document.querySelector('title'),
+        favBtn = document.querySelector('.product-info__button_fav')
 
     title.innerHTML = data.title
     creditSumView.innerHTML = `От ${creditSum} &#8381;/мес`
     productDescr.innerHTML = data.description
-    siteTitle.innerHTML = 'Купить ' + data.title
+    siteTitle.innerHTML = 'Купить ' + data.title,
+        favBtn.dataset.favBtn = data.id
 
     if (salePrice != price) {
         priceBlock.innerHTML = `
@@ -107,6 +110,9 @@ getData('/goods/' + productId).then(({ data }) => {
         goToProductPageBtns.forEach(btn => btn.onclick = () => {
             localStorage.setItem('product-id', btn.dataset.productId)
         })
+
+        addToCartBtnsReload()
+        reloadFavBtns()
     })
 
     new Swiper('.same-products-slider', {
@@ -227,9 +233,6 @@ getData('/goods/' + productId).then(({ data }) => {
                 addToCartBtn.innerHTML = "Добавить в корзину"
                 deleteData(`/cart/${productId}`).then(() => {
                     addToCartBtn.classList.remove('in-the-cart')
-                    setTimeout(() => {
-                        alert('Товар удалён из корзины')
-                    }, 300);
                     deleteKey = false
                 }).catch(error => {
                     console.error(error);
@@ -238,9 +241,6 @@ getData('/goods/' + productId).then(({ data }) => {
                 addToCartBtn.innerHTML = "Удалить из корзины"
                 postData('/cart', cartItem).then(() => {
                     addToCartBtn.classList.add('in-the-cart')
-                    setTimeout(() => {
-                        alert('Товарa добавлен в корзину')
-                    }, 300);
                     deleteKey = true
                 }).catch(error => {
                     console.error(error);
@@ -248,4 +248,6 @@ getData('/goods/' + productId).then(({ data }) => {
             }
         }
     })
+
+    reloadFavBtns()
 })
