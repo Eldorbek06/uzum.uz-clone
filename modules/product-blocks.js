@@ -93,17 +93,21 @@ export function addToCartBtnsReload() {
         }))
 
         btn.onclick = () => {
-            getData(`/cart/${productId}`)
-                .then(() => {
-                    alert('Это товар есть в корзине')
-                }).catch(() => {
-                    postData('/cart', { id: productId, userName: name, quantity: 1 })
-                        .then(res => {
-                            if (res.statusText == "Created") {
-                                btn.classList.add('in-the-cart-icon')
-                            }
-                        })
-                })
+            if (name != null) {
+                getData(`/cart/${productId}`)
+                    .then(() => {
+                        alert('Это товар есть в корзине')
+                    }).catch(() => {
+                        postData('/cart', { id: productId, userName: name, quantity: 1 })
+                            .then(res => {
+                                if (res.statusText == "Created") {
+                                    btn.classList.add('in-the-cart-icon')
+                                }
+                            })
+                    })
+            } else{
+                alert('Что Совершить это действие войдите в аккаунт')
+            }
         }
     })
 }
@@ -129,41 +133,45 @@ export function reloadFavBtns() {
 
     favBtns.forEach(btn => {
         btn.onclick = () => {
-            let productId = btn.dataset.favBtn
+            if (userName != null) {
+                let productId = btn.dataset.favBtn
 
-            getData(`/favorites/${productId}`).then(() => {
+                getData(`/favorites/${productId}`).then(() => {
 
-                deleteData(`/favorites/${productId}`).then(() => {
+                    deleteData(`/favorites/${productId}favoritesJs/pages/favorites.html`).then(() => {
 
-                    btn.classList.remove('favorite-btn_active')
-                    if (btn.classList.contains('product-info__button_fav')) {
-                        btn.innerHTML = 'Добавить в избранное'
-                    }
-                    if (location.pathname == '/pages/favorites.html') {
-                        btn.parentElement.parentElement.remove()
-                        getData('/favorites').then(({ data }) => {
-                            if (data.length == 0) {
-                                document.querySelector('.main').classList.add('no-product_active')
-                            }
-                        })
-                        favoritesJs()
-                    }
+                        btn.classList.remove('favorite-btn_active')
+                        if (btn.classList.contains('product-info__button_fav')) {
+                            btn.innerHTML = 'Добавить в избранное'
+                        }
+                        if (location.pathname == '/pages/favorites.html') {
+                            btn.parentElement.parentElement.remove()
+                            getData('/favorites').then(({ data }) => {
+                                if (data.length == 0) {
+                                    document.querySelector('.main').classList.add('no-product_active')
+                                }
+                                favoritesJs()
+                            })
+                        }
 
-                }).catch(() => alert('Что то пошло не так'))
+                    }).catch(() => alert('Что то пошло не так'))
 
-            }).catch(() => {
-                let obj = { id: productId, userName }
+                }).catch(() => {
+                    let obj = { id: productId, userName }
 
-                postData('/favorites', obj).then(() => {
+                    postData('/favorites', obj).then(() => {
 
-                    btn.classList.add('favorite-btn_active')
-                    if (btn.classList.contains('product-info__button_fav')) {
-                        btn.innerHTML = 'Удалить из избранного'
-                    }
+                        btn.classList.add('favorite-btn_active')
+                        if (btn.classList.contains('product-info__button_fav')) {
+                            btn.innerHTML = 'Удалить из избранного'
+                        }
 
-                }).catch(() => alert('Что то пошло не так'))
+                    }).catch(() => alert('Что то пошло не так'))
 
-            })
+                })
+            } else {
+                alert('Что Совершить это действие войдите в аккаунт')
+            }
         }
     })
 }

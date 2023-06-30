@@ -4,6 +4,7 @@ import { deleteData, getData, postData } from './reqs'
 import { reloadCartProducts, reloadProductCards } from './ui'
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
+import { reloadFavBtns } from './product-blocks';
 
 const userName = localStorage.getItem('user-name')
 
@@ -58,18 +59,22 @@ getData('/goods').then(({ data }) => {
         }))
 
         btn.onclick = () => {
-            getData(`/cart/${productId}`)
-                .then(() => {
-                    alert('Это товар есть в корзине')
-                }).catch(() => {
-                    postData('/cart', { id: productId, userName: name, quantity: 1 })
-                        .then(res => {
-                            if (res.statusText == "Created") {
-                                btn.classList.add('in-the-cart')
-                                relaodCartJs()
-                            }
-                        })
-                })
+            if (name != null) {
+                getData(`/cart/${productId}`)
+                    .then(() => {
+                        alert('Это товар есть в корзине')
+                    }).catch(() => {
+                        postData('/cart', { id: productId, userName: name, quantity: 1 })
+                            .then(res => {
+                                if (res.statusText == "Created") {
+                                    btn.classList.add('in-the-cart')
+                                    relaodCartJs()
+                                }
+                            })
+                    })
+            } else {
+                alert('Что Совершить это действие войдите в аккаунт')
+            }
         }
     })
 })
@@ -87,7 +92,7 @@ relaodCartJs()
 function relaodCartJs() {
     getData(`/cart?userName=${userName}`).then(({ data }) => {
         let neededProducts = data
-
+        document.querySelector('.main').classList.remove('no-product_active')
         checkForAnyProduct()
 
         getData('/goods').then(({ data }) => {
@@ -255,6 +260,7 @@ function relaodCartJs() {
             })
 
             checkRealod()
+            reloadFavBtns()
         })
     })
 }

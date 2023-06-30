@@ -45,6 +45,7 @@ export function popupJs(place) {
                     localStorage.removeItem('user-name')
                     document.querySelector('[data-reg]').innerHTML = 'Войти'
                     alert('Вы вышли из аккаунта!')
+                    location.reload()
                 }
             } else {
                 popup_change(forms, 'sign-in')
@@ -81,6 +82,7 @@ export function popupJs(place) {
                     if (data.length) {
                         return alert('Такого пользователя уже сушествует!')
                     } else {
+                        location.reload()
                         setTimeout(() => {
                             alert('Вы успешно зарегистрировались!')
                         }, 500);
@@ -88,6 +90,7 @@ export function popupJs(place) {
                 } else {
                     if (data.length) {
                         if (data[0].password == obj.password) {
+                            location.reload()
                             setTimeout(() => {
                                 alert('Вы вошли в свой аккаунт!')
                             }, 500);

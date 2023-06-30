@@ -948,13 +948,13 @@
       "name": "Eldor",
       "password": "6002",
       "id": 1
+    },
+    {
+      "name": "Ali",
+      "password": "123",
+      "id": 2
     }
   ],
   "cart": [],
-  "favorites": [
-    {
-      "id": "31",
-      "userName": "Eldor"
-    }
-  ]
+  "favorites": []
 }

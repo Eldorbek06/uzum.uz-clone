@@ -223,28 +223,32 @@ getData('/goods/' + productId).then(({ data }) => {
         }
 
         addToCartBtn.onclick = () => {
-            let cartItem = {
-                id: productId,
-                userName: name,
-                quantity: counter
-            }
+            if (name != null) {
+                let cartItem = {
+                    id: productId,
+                    userName: name,
+                    quantity: counter
+                }
 
-            if (deleteKey) {
-                addToCartBtn.innerHTML = "Добавить в корзину"
-                deleteData(`/cart/${productId}`).then(() => {
-                    addToCartBtn.classList.remove('in-the-cart')
-                    deleteKey = false
-                }).catch(error => {
-                    console.error(error);
-                });
-            } else {
-                addToCartBtn.innerHTML = "Удалить из корзины"
-                postData('/cart', cartItem).then(() => {
-                    addToCartBtn.classList.add('in-the-cart')
-                    deleteKey = true
-                }).catch(error => {
-                    console.error(error);
-                });
+                if (deleteKey) {
+                    addToCartBtn.innerHTML = "Добавить в корзину"
+                    deleteData(`/cart/${productId}`).then(() => {
+                        addToCartBtn.classList.remove('in-the-cart')
+                        deleteKey = false
+                    }).catch(error => {
+                        console.error(error);
+                    });
+                } else {
+                    addToCartBtn.innerHTML = "Удалить из корзины"
+                    postData('/cart', cartItem).then(() => {
+                        addToCartBtn.classList.add('in-the-cart')
+                        deleteKey = true
+                    }).catch(error => {
+                        console.error(error);
+                    });
+                }
+            } else{
+                alert('Что Совершить это действие войдите в аккаунт')
             }
         }
     })
