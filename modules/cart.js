@@ -5,6 +5,7 @@ import { reloadCartProducts, reloadProductCards } from './ui'
 import Swiper from 'swiper/bundle';
 import 'swiper/css/bundle';
 import { reloadFavBtns } from './product-blocks';
+import ConfettiGenerator from "confetti-js";
 
 const userName = localStorage.getItem('user-name')
 
@@ -261,6 +262,8 @@ function relaodCartJs() {
 
             checkRealod()
             reloadFavBtns()
+
+
         })
     })
 }
@@ -271,6 +274,8 @@ function checkRealod() {
         totalSavedView = document.querySelector('.check__total-saved'),
         allCheckboxes = document.querySelectorAll('.cart-product__checkbox input'),
         checkElem = document.querySelector('.check'),
+        checkBtnPopupToggleBtns = document.querySelectorAll('[data-check-popup-toggle]'),
+        checkPopup = document.querySelector('.checkout-popup'),
         totalPrice = 0,
         savedMoney = 0,
         checkedProductCount = 0
@@ -288,7 +293,11 @@ function checkRealod() {
         }
     })
 
-    checkedProductCount == 0 ? checkElem.classList.remove('check-active') : checkElem.classList.add('check-active')
+    if (checkedProductCount == 0) {
+        checkElem.classList.remove('check-active')
+    } else {
+        checkElem.classList.add('check-active')
+    }
 
     totalChosenProductsView.innerHTML = `
         <span class="check__text">Товары (${checkedProductCount}):</span>
@@ -296,4 +305,42 @@ function checkRealod() {
     `
     totalPriceView.innerHTML = totalPrice + ' &#8381;'
     totalSavedView.innerHTML = `Вы экономили: ${savedMoney} &#8381;`
+
+    checkBtnPopupToggleBtns.forEach(el => el.onclick = () => {
+        if (checkedProductCount != 0) {
+            checkPopup.classList.toggle('checkout-popup_active')
+            checkPopup.classList.remove('checkout-done')
+        }
+        if (checkPopup.classList.contains('checkout-popup_active')) {
+            document.body.style.overflowY = 'hidden'
+        } else {
+            document.body.style.overflowY = 'auto'
+        }
+    })
+
+    var confettiSettings = {
+        target: 'my-canvas',
+        max: 300,
+        rotate: true
+    };
+    var confetti = new ConfettiGenerator(confettiSettings);
+    confetti.render();
+
+    let totalChosenProductsViewTwo = document.querySelector('.checkout-popup .check__products-top'),
+        totalPriceViewTwo = document.querySelector('.checkout-popup .check__total-view'),
+        totalSavedViewTwo = document.querySelector('.checkout-popup .check__total-saved')
+
+    totalChosenProductsViewTwo.innerHTML = `
+        <span class="check__text">Товары (${checkedProductCount}):</span>
+        <span class="check__text">${totalPrice} &#8381;</span>
+    `
+
+    totalPriceViewTwo.innerHTML = totalPrice + ' &#8381;'
+    totalSavedViewTwo.innerHTML = `Вы экономили: ${savedMoney} &#8381;`
+
+    let popupCheckoutBtn = document.querySelector('.checkout-popup .check__total-button')
+
+    popupCheckoutBtn.onclick = () => {
+        checkPopup.classList.add('checkout-done')
+    }
 }

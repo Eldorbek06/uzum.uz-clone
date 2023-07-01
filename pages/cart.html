@@ -80,8 +80,8 @@
                                             <span class="check__total-saved">Вы экономили: 10 000 сум</span>
                                         </div>
                                     </div>
-                                    <button class="check__total-button">
-                                        Перейти в оформлению
+                                    <button class="check__total-button" data-check-popup-toggle>
+                                        Перейти к оформлению
                                     </button>
                                 </div>
                             </div>
@@ -110,6 +110,66 @@
         </main>
         <footer class="footer"></footer>
         <div class="popup"></div>
+        <div class="checkout-popup">
+            <div class="checkout-popup__body">
+                <div class="checkout-popup__area" data-check-popup-toggle></div>
+                <div class="checkout-popup__content">
+                    <div class="checkout-popup__check check-active">
+                        <img class="checkout-popup__close" data-check-popup-toggle src="/public/icons/header/close.svg"
+                            alt="icon">
+                        <div class="check__top">
+                            <div class="check__icon-wrapper">
+                                <img class="check__icon" src="/public/icons/cart/check.svg" alt="icon">
+                            </div>
+                            <div class="check__descr">
+                                <p>
+                                    <span class="check__text check__text_bold">
+                                        Бесплатно доставим ваш заказ
+                                    </span>
+                                    <span class="check__text">
+                                        в фирменный пункт выдачи
+                                    </span>
+                                </p>
+                                <p>
+                                    <span class="check__text_gray">
+                                        Бесплатная доставка до двери со 490 000 сум
+                                    </span>
+                                </p>
+                            </div>
+                        </div>
+                        <div class="check__bottom">
+                            <h3 class="check__title">Ваш заказ</h3>
+                            <div class="check__products">
+                                <div class="check__products-top">
+                                    <span class="check__text">Товары (1):</span>
+                                    <span class="check__text">10 000</span>
+                                </div>
+                                <button data-delivery-date class="check__products-button">
+                                    Доставка 27 июня (Сегодня)
+                                </button>
+                            </div>
+                            <div class="check__total">
+                                <div class="check__total-top">
+                                    <span class="check__text">Итого:</span>
+                                    <div class="check__total-price-block">
+                                        <span class="check__total-view">10 000 сум</span>
+                                        <span class="check__total-saved">Вы экономили: 10 000 сум</span>
+                                    </div>
+                                </div>
+                                <button class="check__total-button">
+                                    Оформить заказ
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <canvas id="my-canvas"></canvas>
+                <div class="thanks">
+                    <h2 class="thanks__title">Спасибо за покупку!</h2>
+                    <button class="thanks__button" data-check-popup-toggle>Закрыть</button>
+                </div>
+            </div>
+        </div>
     </div>
 
     <script type="module" src="/modules/cart.js"></script>

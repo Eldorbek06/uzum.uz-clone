@@ -955,6 +955,17 @@
       "id": 2
     }
   ],
-  "cart": [],
+  "cart": [
+    {
+      "id": "12",
+      "userName": "Ali",
+      "quantity": 1
+    },
+    {
+      "id": "14",
+      "userName": "Ali",
+      "quantity": 1
+    }
+  ],
   "favorites": []
 }
